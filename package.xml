@@ -34,7 +34,7 @@ owns or has access to.</description>
  </stability>
  <license uri="http://www.horde.org/licenses/lgpl21">LGPL-2.1</license>
  <notes>
-* 
+* [jan] Add Horde_Share_Object#toHash().
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
@@ -1094,7 +1094,7 @@ Initial release as a PEAR package
    <date>2017-05-24</date>
    <license uri="http://www.horde.org/licenses/lgpl21">LGPL-2.1</license>
    <notes>
-* 
+* [jan] Add Horde_Share_Object#toHash().
    </notes>
   </release>
  </changelog>
