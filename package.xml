@@ -23,7 +23,7 @@ owns or has access to.</description>
   <email>mrubinsk@horde.org</email>
   <active>yes</active>
  </lead>
- <date>2017-05-24</date>
+ <date>2017-10-17</date>
  <version>
   <release>2.2.0</release>
   <api>1.5.0</api>
@@ -41,7 +41,6 @@ owns or has access to.</description>
    <dir name="doc">
     <dir name="Horde">
      <dir name="Share">
-      <file name="COPYING" role="doc" />
       <file name="UPGRADING" role="doc" />
      </dir> <!-- /doc/Horde/Share -->
     </dir> <!-- /doc/Horde -->
@@ -367,6 +366,7 @@ owns or has access to.</description>
      </dir> <!-- /test/Horde/Share -->
     </dir> <!-- /test/Horde -->
    </dir> <!-- /test -->
+   <file name="LICENSE" role="doc" />
   </dir> <!-- / -->
  </contents>
  <dependencies>
@@ -455,19 +455,18 @@ owns or has access to.</description>
  </dependencies>
  <phprelease>
   <filelist>
-   <install as="COPYING" name="doc/Horde/Share/COPYING" />
    <install as="UPGRADING" name="doc/Horde/Share/UPGRADING" />
    <install as="Horde/Share/Base.php" name="lib/Horde/Share/Base.php" />
    <install as="Horde/Share/Exception.php" name="lib/Horde/Share/Exception.php" />
    <install as="Horde/Share/Kolab.php" name="lib/Horde/Share/Kolab.php" />
    <install as="Horde/Share/Object.php" name="lib/Horde/Share/Object.php" />
-   <install as="Horde/Share/Sql.php" name="lib/Horde/Share/Sql.php" />
-   <install as="Horde/Share/Sqlng.php" name="lib/Horde/Share/Sqlng.php" />
-   <install as="Horde/Share/Translation.php" name="lib/Horde/Share/Translation.php" />
    <install as="Horde/Share/Object/Kolab.php" name="lib/Horde/Share/Object/Kolab.php" />
    <install as="Horde/Share/Object/Sql.php" name="lib/Horde/Share/Object/Sql.php" />
    <install as="Horde/Share/Object/Sqlng.php" name="lib/Horde/Share/Object/Sqlng.php" />
-   <install as="locale/Horde_Share.pot" name="locale/Horde_Share.pot" />
+   <install as="Horde/Share/Sql.php" name="lib/Horde/Share/Sql.php" />
+   <install as="Horde/Share/Sqlng.php" name="lib/Horde/Share/Sqlng.php" />
+   <install as="Horde/Share/Translation.php" name="lib/Horde/Share/Translation.php" />
+   <install as="LICENSE" name="LICENSE" />
    <install as="locale/ar/LC_MESSAGES/Horde_Share.mo" name="locale/ar/LC_MESSAGES/Horde_Share.mo" />
    <install as="locale/ar/LC_MESSAGES/Horde_Share.po" name="locale/ar/LC_MESSAGES/Horde_Share.po" />
    <install as="locale/bg/LC_MESSAGES/Horde_Share.mo" name="locale/bg/LC_MESSAGES/Horde_Share.mo" />
@@ -500,6 +499,7 @@ owns or has access to.</description>
    <install as="locale/gl/LC_MESSAGES/Horde_Share.po" name="locale/gl/LC_MESSAGES/Horde_Share.po" />
    <install as="locale/he/LC_MESSAGES/Horde_Share.mo" name="locale/he/LC_MESSAGES/Horde_Share.mo" />
    <install as="locale/he/LC_MESSAGES/Horde_Share.po" name="locale/he/LC_MESSAGES/Horde_Share.po" />
+   <install as="locale/Horde_Share.pot" name="locale/Horde_Share.pot" />
    <install as="locale/hr/LC_MESSAGES/Horde_Share.mo" name="locale/hr/LC_MESSAGES/Horde_Share.mo" />
    <install as="locale/hr/LC_MESSAGES/Horde_Share.po" name="locale/hr/LC_MESSAGES/Horde_Share.po" />
    <install as="locale/hu/LC_MESSAGES/Horde_Share.mo" name="locale/hu/LC_MESSAGES/Horde_Share.mo" />
@@ -556,13 +556,11 @@ owns or has access to.</description>
    <install as="Horde/Share/Autoload.php" name="test/Horde/Share/Autoload.php" />
    <install as="Horde/Share/bootstrap.php" name="test/Horde/Share/bootstrap.php" />
    <install as="Horde/Share/conf.php.dist" name="test/Horde/Share/conf.php.dist" />
-   <install as="Horde/Share/phpunit.xml" name="test/Horde/Share/phpunit.xml" />
-   <install as="Horde/Share/stress-test" name="test/Horde/Share/stress-test" />
-   <install as="Horde/Share/TestBase.php" name="test/Horde/Share/TestBase.php" />
    <install as="Horde/Share/Kolab/MockTest.php" name="test/Horde/Share/Kolab/MockTest.php" />
    <install as="Horde/Share/Kolab/UnitTest.php" name="test/Horde/Share/Kolab/UnitTest.php" />
    <install as="Horde/Share/migration/sql.php" name="test/Horde/Share/migration/sql.php" />
    <install as="Horde/Share/migration/sqlng.php" name="test/Horde/Share/migration/sqlng.php" />
+   <install as="Horde/Share/phpunit.xml" name="test/Horde/Share/phpunit.xml" />
    <install as="Horde/Share/Sql/Base.php" name="test/Horde/Share/Sql/Base.php" />
    <install as="Horde/Share/Sql/MysqliTest.php" name="test/Horde/Share/Sql/MysqliTest.php" />
    <install as="Horde/Share/Sql/MysqlTest.php" name="test/Horde/Share/Sql/MysqlTest.php" />
@@ -577,7 +575,9 @@ owns or has access to.</description>
    <install as="Horde/Share/Sqlng/Pdo/MysqlTest.php" name="test/Horde/Share/Sqlng/Pdo/MysqlTest.php" />
    <install as="Horde/Share/Sqlng/Pdo/PgsqlTest.php" name="test/Horde/Share/Sqlng/Pdo/PgsqlTest.php" />
    <install as="Horde/Share/Sqlng/Pdo/SqliteTest.php" name="test/Horde/Share/Sqlng/Pdo/SqliteTest.php" />
+   <install as="Horde/Share/stress-test" name="test/Horde/Share/stress-test" />
    <install as="Horde/Share/Stub/Group.php" name="test/Horde/Share/Stub/Group.php" />
+   <install as="Horde/Share/TestBase.php" name="test/Horde/Share/TestBase.php" />
   </filelist>
  </phprelease>
  <changelog>
@@ -1091,7 +1091,7 @@ Initial release as a PEAR package
    <stability>
     <release>stable</release>
     <api>stable</api></stability>
-   <date>2017-05-24</date>
+   <date>2017-10-17</date>
    <license uri="http://www.horde.org/licenses/lgpl21">LGPL-2.1</license>
    <notes>
 * [jan] Add Horde_Share_Object#toHash().
