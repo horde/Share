@@ -41,7 +41,7 @@ owns or has access to.</description>
    <dir name="doc">
     <dir name="Horde">
      <dir name="Share">
-      <file name="UPGRADING" role="doc" />
+      <file name="UPGRADING.rst" role="doc" />
      </dir> <!-- /doc/Horde/Share -->
     </dir> <!-- /doc/Horde -->
    </dir> <!-- /doc -->
@@ -455,7 +455,7 @@ owns or has access to.</description>
  </dependencies>
  <phprelease>
   <filelist>
-   <install as="UPGRADING" name="doc/Horde/Share/UPGRADING" />
+   <install as="UPGRADING.rst" name="doc/Horde/Share/UPGRADING.rst" />
    <install as="Horde/Share/Base.php" name="lib/Horde/Share/Base.php" />
    <install as="Horde/Share/Exception.php" name="lib/Horde/Share/Exception.php" />
    <install as="Horde/Share/Kolab.php" name="lib/Horde/Share/Kolab.php" />
