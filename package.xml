@@ -23,7 +23,7 @@ owns or has access to.</description>
   <email>mrubinsk@horde.org</email>
   <active>yes</active>
  </lead>
- <date>2017-10-20</date>
+ <date>2017-10-27</date>
  <version>
   <release>2.2.0</release>
   <api>1.5.0</api>
@@ -41,6 +41,7 @@ owns or has access to.</description>
    <dir name="doc">
     <dir name="Horde">
      <dir name="Share">
+      <file name="CHANGES" role="doc" />
       <file name="UPGRADING.rst" role="doc" />
      </dir> <!-- /doc/Horde/Share -->
     </dir> <!-- /doc/Horde -->
@@ -454,6 +455,7 @@ owns or has access to.</description>
  </dependencies>
  <phprelease>
   <filelist>
+   <install as="CHANGES" name="doc/Horde/Share/CHANGES" />
    <install as="UPGRADING.rst" name="doc/Horde/Share/UPGRADING.rst" />
    <install as="Horde/Share/Base.php" name="lib/Horde/Share/Base.php" />
    <install as="Horde/Share/Exception.php" name="lib/Horde/Share/Exception.php" />
@@ -1084,7 +1086,7 @@ owns or has access to.</description>
    <stability>
     <release>stable</release>
     <api>stable</api></stability>
-   <date>2017-10-20</date>
+   <date>2017-10-27</date>
    <license uri="http://www.horde.org/licenses/lgpl21">LGPL-2.1</license>
    <notes>
 * [jan] Add Horde_Share_Object#toHash().
