@@ -593,7 +593,7 @@ owns or has access to.</description>
    <date>2003-07-05</date>
    <license uri="http://www.horde.org/licenses/lgpl21">LGPL-2.1</license>
    <notes>
-Initial release as a PEAR package
+* Initial release as a PEAR package
    </notes>
   </release>
   <release>
@@ -608,13 +608,8 @@ Initial release as a PEAR package
    <date>2004-10-29</date>
    <license uri="http://www.horde.org/licenses/lgpl21">LGPL-2.1</license>
    <notes>
-- Added countShares().
-- listShares() and countShares() now treat the $owner argument
-  as an optional username restricting the returned shares, not
-  a modifier to the initial $userid. Now $userid is the user
-  who must have permission to see the shares that are returned
-  or counted, and $owner, if non-null, limits the shares
-  returned to those owned by $owner.
+* Added countShares().
+* listShares() and countShares() now treat the $owner argument as an optional username restricting the returned shares, not a modifier to the initial $userid. Now $userid is the user who must have permission to see the shares that are returned or counted, and $owner, if non-null, limits the shares returned to those owned by $owner.
    </notes>
   </release>
   <release>
