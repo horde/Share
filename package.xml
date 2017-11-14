@@ -361,7 +361,6 @@
       <file name="Autoload.php" role="test" />
       <file name="bootstrap.php" role="test" />
       <file name="conf.php.dist" role="test" />
-      <file name="phpunit.xml" role="test" />
       <file name="stress-test" role="test" />
       <file name="TestBase.php" role="test" />
      </dir> <!-- /test/Horde/Share -->
@@ -557,7 +556,6 @@
    <install as="Horde/Share/Autoload.php" name="test/Horde/Share/Autoload.php" />
    <install as="Horde/Share/bootstrap.php" name="test/Horde/Share/bootstrap.php" />
    <install as="Horde/Share/conf.php.dist" name="test/Horde/Share/conf.php.dist" />
-   <install as="Horde/Share/phpunit.xml" name="test/Horde/Share/phpunit.xml" />
    <install as="Horde/Share/stress-test" name="test/Horde/Share/stress-test" />
    <install as="Horde/Share/TestBase.php" name="test/Horde/Share/TestBase.php" />
    <install as="Horde/Share/Kolab/MockTest.php" name="test/Horde/Share/Kolab/MockTest.php" />
