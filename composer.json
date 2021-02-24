@@ -48,9 +48,6 @@
     "autoload": {
         "psr-0": {
             "Horde_Share": "lib/"
-        },
-        "psr-4": {
-            "Horde\\Share\\": "src/"
         }
     }
 }
