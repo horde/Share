@@ -2,6 +2,9 @@
 /**
  * Prepare the test setup.
  */
+namespace Horde\Share;
+use \Sql;
+
 require_once __DIR__ . '/Base.php';
 
 /**
@@ -13,9 +16,9 @@ require_once __DIR__ . '/Base.php';
  * @subpackage UnitTests
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
-class Horde_Share_Sql_MysqlTest extends Horde_Share_Test_Sql_Base
+class MysqlTest extends Base
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if (!extension_loaded('mysql')) {
             self::$reason = 'No mysql extension';

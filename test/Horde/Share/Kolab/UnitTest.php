@@ -10,6 +10,9 @@
  * @author     Gunnar Wrobel <wrobel@pardus.de>
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
+namespace Horde\Share;
+use \Kolab;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Unit testing for the Kolab driver.
@@ -25,10 +28,9 @@
  * @author     Gunnar Wrobel <wrobel@pardus.de>
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
-class Horde_Share_Kolab_UnitTest
-extends PHPUnit_Framework_TestCase
+class UnitTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         if (!interface_exists('Horde_Kolab_Storage')) {
             $this->markTestSkipped('The Kolab_Storage package seems to be unavailable.');

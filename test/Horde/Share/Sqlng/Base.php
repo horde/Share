@@ -8,7 +8,10 @@
  * @subpackage UnitTests
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
-class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
+namespace Horde\Share\Sqlng;
+use Horde_Share_TestBase;
+
+class Base extends Horde_Share_TestBase
 {
     protected static $db;
 
@@ -185,7 +188,7 @@ class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
         $this->callbackSetShareOb(new Horde_Share_Object_Sqlng(array()));
     }
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         require_once __DIR__ . '/../migration/sqlng.php';
         migrate_sqlng(self::$db);
@@ -199,7 +202,7 @@ class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
         $GLOBALS['injector']->setInstance('Horde_Group', $group);
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         if (self::$db) {
             $migration = new Horde_Db_Migration_Base(self::$db);
@@ -211,7 +214,7 @@ class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
         }
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         if (!self::$db) {
             $this->markTestSkipped(self::$reason);
