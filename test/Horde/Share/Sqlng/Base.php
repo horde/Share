@@ -8,10 +8,7 @@
  * @subpackage UnitTests
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
-namespace Horde\Share\Sqlng;
-use Horde_Share_TestBase;
-
-class Base extends Horde_Share_TestBase
+class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
 {
     protected static $db;
 
@@ -106,7 +103,7 @@ class Base extends Horde_Share_TestBase
      public function testListOwners()
      {
         $owners = self::$share->listOwners();
-        $this->assertInternalType('array', $owners);
+        $this->assertIsArray($owners);
         $this->assertTrue(in_array('john', $owners));
      }
 

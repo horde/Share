@@ -2,13 +2,9 @@
 /**
  * Prepare the test setup.
  */
-/*namespace Horde\Share;
-use \Sqlng;
-use \Pdo;
-use Horde\Share\Test\Sqlng\Base as Base;
-*/
-namespace Horde\Share;
-use Horde_Share_Sqlng_Base;
+namespace Horde\Share\Sqlng\Pdo;
+use Horde_Share_Test_Sqlng_Base as Base;
+use \PDO;
 
 require_once __DIR__ . '/../Base.php';
 
@@ -21,7 +17,7 @@ require_once __DIR__ . '/../Base.php';
  * @subpackage UnitTests
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
-class Horde_Share_Sqlng_Pdo_MysqlTest extends Horde_Share_Sqlng_Base
+class MysqlTest extends Base
 {
     public static function setUpBeforeClass(): void
     {
