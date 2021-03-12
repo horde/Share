@@ -4,6 +4,7 @@
  */
 namespace Horde\Share;
 use \Sql;
+use Horde_Share_Test_Sql_Base as Base;
 
 require_once __DIR__ . '/Base.php';
 

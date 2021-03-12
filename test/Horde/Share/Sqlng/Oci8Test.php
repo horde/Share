@@ -3,7 +3,7 @@
  * Prepare the test setup.
  */
 namespace Horde\Share\Sqlng;
-use Horde\Share\Sqlng\Base as Base;
+use Horde_Share_Test_Sqlng_Base as Base;
 
 require_once __DIR__ . '/Base.php';
 

@@ -278,7 +278,7 @@ class Horde_Share_TestBase extends Horde_Test_Case
     {
         $this->switchAuth(null);
         $shares = self::$share->listAllShares();
-        $this->assertInternalType('array', $shares);
+        $this->assertIsArray($shares);
         $this->assertEquals(6, count($shares));
         $this->assertArrayHasKey('myshare', $shares);
         $this->assertArrayHasKey('systemshare', $shares);
@@ -311,7 +311,7 @@ class Horde_Share_TestBase extends Horde_Test_Case
     {
         // Default listing.
         $shares = self::$share->listShares('john');
-        $this->assertInternalType('array', $shares);
+        $this->assertIsArray($shares);
         $this->assertEquals(5, count($shares));
 
         // Test arguments for default listing.
@@ -372,7 +372,7 @@ class Horde_Share_TestBase extends Horde_Test_Case
             $shares
         );
         $shares = self::$share->listShares('john', array('perm' => Horde_Perms::ALL));
-        $this->assertInternalType('array', $shares);
+        $this->assertIsArray($shares);
         $this->assertEquals(5, count($shares));
 
         // Paging.
@@ -434,7 +434,7 @@ class Horde_Share_TestBase extends Horde_Test_Case
     {
         $this->switchAuth(null);
         $shares = self::$share->listSystemShares();
-        $this->assertInternalType('array', $shares);
+        $this->assertIsArray($shares);
         $this->assertEquals(1, count($shares));
         $this->assertArrayHasKey('systemshare', $shares);
         $this->switchAuth('john');
