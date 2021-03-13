@@ -1,4 +1,5 @@
 {
+    "minimum-stability": "dev",
     "name": "horde/share",
     "description": "Resource sharing library",
     "type": "library",
@@ -30,18 +31,18 @@
     ],
     "require": {
         "php": "^7",
-        "horde/db": "^3",
-        "horde/exception": "^3",
-        "horde/group": "^3",
-        "horde/perms": "^3",
-        "horde/support": "^3",
-        "horde/translation": "^3",
-        "horde/url": "^3",
-        "horde/util": "^3"
+        "horde/db": "^3 || dev-FRAMEWORK_6_0",
+        "horde/exception": "^3 || dev-FRAMEWORK_6_0",
+        "horde/group": "^3 || dev-FRAMEWORK_6_0",
+        "horde/perms": "^3 || dev-FRAMEWORK_6_0",
+        "horde/support": "^3 || dev-FRAMEWORK_6_0",
+        "horde/translation": "^3 || dev-FRAMEWORK_6_0",
+        "horde/url": "^3 || dev-FRAMEWORK_6_0",
+        "horde/util": "^3 || dev-FRAMEWORK_6_0"
     },
     "suggest": {
-        "horde/kolab_storage": "^3",
-        "horde/test": "^3"
+        "horde/kolab_storage": "^3 || dev-FRAMEWORK_6_0",
+        "horde/test": "^3 || dev-FRAMEWORK_6_0"
     },
     "autoload": {
         "psr-0": {
