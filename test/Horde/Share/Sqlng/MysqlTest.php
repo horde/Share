@@ -3,9 +3,6 @@
  * Prepare the test setup.
  */
 namespace Horde\Share\Sqlng;
-use Horde_Share_Test_Sqlng_Base as Base;
-
-require_once __DIR__ . '/Base.php';
 
 /**
  * Copyright 2010-2017 Horde LLC (http://www.horde.org/)
@@ -16,7 +13,7 @@ require_once __DIR__ . '/Base.php';
  * @subpackage UnitTests
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
-class MysqlTest extends Base
+class MysqlTest extends BaseTestCase
 {
     public static function setUpBeforeClass(): void
     {

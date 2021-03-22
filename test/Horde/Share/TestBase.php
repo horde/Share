@@ -8,8 +8,12 @@
  * @subpackage UnitTests
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
+namespace Horde\Share;
+use Horde_Test_Case as TestCase;
+use \Horde_Perms;
+use \Horde_Support_Stub;
 
-class Horde_Share_TestBase extends Horde_Test_Case
+class TestBase extends TestCase
 {
     protected static $share;
 

@@ -3,10 +3,8 @@
  * Prepare the test setup.
  */
 namespace Horde\Share\Sqlng\Pdo;
-use Horde_Share_Test_Sqlng_Base as Base;
+use Horde\Share\Sqlng\BaseTestCase;
 use \PDO;
-
-require_once __DIR__ . '/../Base.php';
 
 /**
  * Copyright 2010-2017 Horde LLC (http://www.horde.org/)
@@ -17,7 +15,7 @@ require_once __DIR__ . '/../Base.php';
  * @subpackage UnitTests
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
-class PgsqlTest extends Base
+class PgsqlTest extends BaseTestCase
 {
     public static function setUpBeforeClass(): void
     {

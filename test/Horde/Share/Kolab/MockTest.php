@@ -10,6 +10,8 @@
  * @author     Gunnar Wrobel <wrobel@pardus.de>
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
+namespace Horde\Share\Kolab;
+use Horde\Share\TestBase as TestBase;
 
 /**
  * Integration test for the Kolab driver based on the in-memory mock driver.
@@ -25,7 +27,7 @@
  * @author     Gunnar Wrobel <wrobel@pardus.de>
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
-class MockTest extends Horde_Share_TestBase
+class MockTest extends TestBase
 {
     private static $_data;
 
