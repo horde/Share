@@ -8,7 +8,16 @@
  * @subpackage UnitTests
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
-class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
+namespace Horde\Share\Sql;
+use Horde\Share\TestBase as TestBase;
+use \Horde_Share_Stub_Group;
+use \Horde_Share_Sql;
+use \Horde_Perms_Sql;
+use \Horde_Injector;
+use \Horde_Share_Object_Sql;
+use \Horde_Db_Migration_Base;
+
+class BaseTestCase extends TestBase
 {
     protected static $db;
 
@@ -21,7 +30,7 @@ class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
 
     public function testSetTable()
     {
-        $this->assertEquals('test_sharesng', self::$share->getTable());
+        $this->assertEquals('test_shares', self::$share->getTable());
         self::$share->setTable('foo');
         $this->assertEquals('foo', self::$share->getTable());
         self::$share->setTable('test_shares');
@@ -35,8 +44,8 @@ class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
 
     public function testAddShare()
     {
-        $share = parent::addShare();
-        $this->assertInstanceOf('Horde_Share_Object_Sqlng', $share);
+        $share = $this->addShare();
+        $this->assertInstanceOf('Horde_Share_Object_Sql', $share);
     }
 
     /**
@@ -44,7 +53,7 @@ class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
      */
     public function testPermissions()
     {
-        parent::permissions();
+        $this->permissions();
     }
 
     /**
@@ -52,7 +61,7 @@ class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
      */
     public function testExists()
     {
-        parent::exists();
+        $this->exists();
     }
 
     /**
@@ -60,7 +69,7 @@ class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
      */
     public function testCountShares()
     {
-        parent::countShares();
+        $this->countShares();
     }
 
     /**
@@ -68,8 +77,16 @@ class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
      */
     public function testGetShare()
     {
-        $share = parent::getShare();
-        $this->assertInstanceOf('Horde_Share_Object_Sqlng', $share);
+        $share = $this->getShare();
+        $this->assertInstanceOf('Horde_Share_Object_Sql', $share);
+    }
+
+    /**
+     * @depends testAddShare
+     */
+    public function testHierarchy()
+    {
+        $this->hierarchy();
     }
 
     /**
@@ -77,7 +94,7 @@ class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
      */
     public function testGetShareById()
     {
-        parent::getShareById();
+        $this->getShareById();
     }
 
     /**
@@ -85,16 +102,7 @@ class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
      */
     public function testGetShares()
     {
-        parent::getShares();
-    }
-
-    /**
-     */
-    public function testGetParent()
-    {
-        $share = self::$share->getShare('myshare');
-        $child = self::$share->getShare('mychildshare');
-        $this->assertEquals($share->getId(), $child->getParent()->getId());
+        $this->getShares();
     }
 
     /**
@@ -103,7 +111,7 @@ class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
      public function testListOwners()
      {
         $owners = self::$share->listOwners();
-        $this->assertInternalType('array', $owners);
+        $this->assertIsArray($owners);
         $this->assertTrue(in_array('john', $owners));
      }
 
@@ -121,7 +129,7 @@ class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
      */
     public function testListAllShares()
     {
-        parent::listAllShares();
+        $this->listAllShares();
     }
 
     /**
@@ -129,7 +137,7 @@ class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
      */
     public function testListShares()
     {
-        parent::listShares();
+        $this->listShares();
     }
 
     /**
@@ -137,7 +145,7 @@ class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
      */
     public function testListSystemShares()
     {
-        parent::listSystemShares();
+        $this->listSystemShares();
     }
 
     /**
@@ -153,7 +161,7 @@ class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
      */
     public function testRemoveUserPermissions()
     {
-        return parent::removeUserPermissions();
+        return $this->removeUserPermissions();
     }
 
     /**
@@ -161,7 +169,7 @@ class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
      */
     public function testRemoveGroupPermissions()
     {
-        parent::removeGroupPermissions();
+        $this->removeGroupPermissions();
     }
 
     /**
@@ -169,7 +177,7 @@ class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
      */
     public function testRemoveShare()
     {
-        parent::removeShare();
+        $this->removeShare();
     }
 
     /**
@@ -177,21 +185,21 @@ class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
      */
     public function testRenameShare()
     {
-        parent::renameShare();
+        $this->renameShare();
     }
 
     public function testCallback()
     {
-        $this->callbackSetShareOb(new Horde_Share_Object_Sqlng(array()));
+        $this->callbackSetShareOb(new Horde_Share_Object_Sql(array()));
     }
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
-        require_once __DIR__ . '/../migration/sqlng.php';
-        migrate_sqlng(self::$db);
+        require_once __DIR__ . '/../migration/sql.php';
+        migrate_sql(self::$db);
 
         $group = new Horde_Share_Stub_Group();
-        self::$share = new Horde_Share_Sqlng('test', 'john', new Horde_Perms_Sql(array('db' => self::$db)), $group);
+        self::$share = new Horde_Share_Sql('test', 'john', new Horde_Perms_Sql(array('db' => self::$db)), $group);
         self::$share->setStorage(self::$db);
 
         // FIXME
@@ -199,7 +207,7 @@ class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
         $GLOBALS['injector']->setInstance('Horde_Group', $group);
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         if (self::$db) {
             $migration = new Horde_Db_Migration_Base(self::$db);
@@ -211,7 +219,7 @@ class Horde_Share_Test_Sqlng_Base extends Horde_Share_TestBase
         }
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         if (!self::$db) {
             $this->markTestSkipped(self::$reason);

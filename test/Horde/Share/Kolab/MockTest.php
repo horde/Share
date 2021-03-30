@@ -10,6 +10,8 @@
  * @author     Gunnar Wrobel <wrobel@pardus.de>
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
+namespace Horde\Share\Kolab;
+use Horde\Share\TestBase as TestBase;
 
 /**
  * Integration test for the Kolab driver based on the in-memory mock driver.
@@ -25,7 +27,7 @@
  * @author     Gunnar Wrobel <wrobel@pardus.de>
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
-class Horde_Share_Kolab_MockTest extends Horde_Share_TestBase
+class MockTest extends TestBase
 {
     private static $_data;
 
@@ -33,7 +35,7 @@ class Horde_Share_Kolab_MockTest extends Horde_Share_TestBase
 
     protected static $cache;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if (!class_exists('Horde_Kolab_Storage_Driver_Mock_Data')) {
             return;
@@ -89,7 +91,7 @@ class Horde_Share_Kolab_MockTest extends Horde_Share_TestBase
         }
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         if (!interface_exists('Horde_Kolab_Storage')) {
             $this->markTestSkipped('The Kolab_Storage package seems to be unavailable.');

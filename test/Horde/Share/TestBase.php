@@ -8,7 +8,12 @@
  * @subpackage UnitTests
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
-class Horde_Share_TestBase extends Horde_Test_Case
+namespace Horde\Share;
+use Horde_Test_Case as TestCase;
+use \Horde_Perms;
+use \Horde_Support_Stub;
+
+class TestBase extends TestCase
 {
     protected static $share;
 
@@ -277,7 +282,7 @@ class Horde_Share_TestBase extends Horde_Test_Case
     {
         $this->switchAuth(null);
         $shares = self::$share->listAllShares();
-        $this->assertInternalType('array', $shares);
+        $this->assertIsArray($shares);
         $this->assertEquals(6, count($shares));
         $this->assertArrayHasKey('myshare', $shares);
         $this->assertArrayHasKey('systemshare', $shares);
@@ -310,7 +315,7 @@ class Horde_Share_TestBase extends Horde_Test_Case
     {
         // Default listing.
         $shares = self::$share->listShares('john');
-        $this->assertInternalType('array', $shares);
+        $this->assertIsArray($shares);
         $this->assertEquals(5, count($shares));
 
         // Test arguments for default listing.
@@ -371,7 +376,7 @@ class Horde_Share_TestBase extends Horde_Test_Case
             $shares
         );
         $shares = self::$share->listShares('john', array('perm' => Horde_Perms::ALL));
-        $this->assertInternalType('array', $shares);
+        $this->assertIsArray($shares);
         $this->assertEquals(5, count($shares));
 
         // Paging.
@@ -433,7 +438,7 @@ class Horde_Share_TestBase extends Horde_Test_Case
     {
         $this->switchAuth(null);
         $shares = self::$share->listSystemShares();
-        $this->assertInternalType('array', $shares);
+        $this->assertIsArray($shares);
         $this->assertEquals(1, count($shares));
         $this->assertArrayHasKey('systemshare', $shares);
         $this->switchAuth('john');

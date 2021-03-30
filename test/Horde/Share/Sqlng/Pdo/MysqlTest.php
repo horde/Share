@@ -2,7 +2,9 @@
 /**
  * Prepare the test setup.
  */
-require_once __DIR__ . '/../Base.php';
+namespace Horde\Share\Sqlng\Pdo;
+use Horde\Share\Sqlng\BaseTestCase;
+use \PDO;
 
 /**
  * Copyright 2010-2017 Horde LLC (http://www.horde.org/)
@@ -13,9 +15,9 @@ require_once __DIR__ . '/../Base.php';
  * @subpackage UnitTests
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
-class Horde_Share_Sqlng_Pdo_MysqlTest extends Horde_Share_Test_Sqlng_Base
+class MysqlTest extends BaseTestCase
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if (!extension_loaded('pdo') ||
             !in_array('mysql', PDO::getAvailableDrivers())) {
