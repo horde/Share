@@ -41,6 +41,15 @@ class Horde_Share_Sql extends Horde_Share_Base
     protected $_table;
 
     /**
+     * @var array
+     */
+    private $_driverConversions = [
+        'utf8mb4' => 'UTF-8',
+        'utf8mb3' => 'UTF-8',
+        'utf8' => 'UTF-8'
+    ];
+
+    /**
      * The Horde_Share_Object subclass to instantiate objects as
      *
      * @var string
@@ -1008,9 +1017,14 @@ class Horde_Share_Sql extends Horde_Share_Base
     protected function _fromDriverCharset($data)
     {
         foreach ($data as $key => &$value) {
+            $charset = $this->_db->getOption('charset');
+            // This should be factored out to something SQL DB specific
+            if (array_key_exists($charset, $this->_driverConversions)) {
+                $charset = $this->_driverConversions[$charset];
+            }
             if (substr($key, 0, 9) == 'attribute') {
                 $value = Horde_String::convertCharset(
-                    $value, $this->_db->getOption('charset'), 'UTF-8');
+                    $value, $charset, 'UTF-8');
             }
         }
 
@@ -1029,9 +1043,15 @@ class Horde_Share_Sql extends Horde_Share_Base
         }
 
         foreach ($data as $key => &$value) {
+            $charset = $this->_db->getOption('charset');
+            // This should be factored out to something SQL DB specific
+            if (array_key_exists($charset, $this->_driverConversions)) {
+                $charset = $this->_driverConversions[$charset];
+            }
+
             if (substr($key, 0, 9) == 'attribute') {
                 $value = Horde_String::convertCharset(
-                    $value, 'UTF-8', $this->_db->getOption('charset'));
+                    $value, 'UTF-8', $charset);
             }
         }
 
