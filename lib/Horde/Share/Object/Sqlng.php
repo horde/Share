@@ -41,12 +41,17 @@ class Horde_Share_Object_Sqlng extends Horde_Share_Object_Sql
      */
     public function serialize()
     {
-        return serialize(array(
+        return serialize($this->__serialize());
+    }
+
+    public function __serialize(): array
+    {
+        return array(
             self::VERSION,
             $this->data,
             $this->_shareCallback,
             $this->availablePermissions,
-        ));
+        );
     }
 
     /**
@@ -56,9 +61,12 @@ class Horde_Share_Object_Sqlng extends Horde_Share_Object_Sql
      */
     public function unserialize($data)
     {
-        $data = @unserialize($data);
-        if (!is_array($data) ||
-            !isset($data[0]) ||
+        $this->__unserialize(@unserialize($data));
+    }
+
+    public function __unserialize(array $data): void
+    {
+        if (!isset($data[0]) ||
             ($data[0] != self::VERSION)) {
             throw new Exception('Cache version change');
         }
@@ -68,7 +76,7 @@ class Horde_Share_Object_Sqlng extends Horde_Share_Object_Sql
             throw new Exception('Missing callback for Horde_Share_Object unserializing');
         }
         $this->_shareCallback = $data[2];
-        $this->availablePermissions = $data[3];
+        $this->availablePermissions = $data[3];        
     }
 
     /**
