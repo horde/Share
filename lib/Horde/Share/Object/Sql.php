@@ -57,11 +57,16 @@ class Horde_Share_Object_Sql extends Horde_Share_Object implements Serializable
      */
     public function serialize()
     {
-        return serialize(array(
+        return serialize($this->__serialize());
+    }
+
+    public function __serialize(): array
+    {
+        return array(
             self::VERSION,
             $this->data,
             $this->_shareCallback,
-        ));
+        );
     }
 
     /**
@@ -71,9 +76,12 @@ class Horde_Share_Object_Sql extends Horde_Share_Object implements Serializable
      */
     public function unserialize($data)
     {
-        $data = @unserialize($data);
-        if (!is_array($data) ||
-            !isset($data[0]) ||
+        $this->__unserialize(@unserialize($data));
+    }
+
+    public function __unserialize(array $data): void
+    {
+        if (!isset($data[0]) ||
             ($data[0] != self::VERSION)) {
             throw new Exception('Cache version change');
         }

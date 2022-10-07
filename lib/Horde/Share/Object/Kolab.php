@@ -93,12 +93,17 @@ implements Serializable, Horde_Perms_Permission_Kolab_Storage
      */
     public function serialize()
     {
-        return serialize(array(
+        return serialize($this->__serialize());
+    }
+
+    public function __serialize(): array
+    {
+        return     array(
             self::VERSION,
             $this->_id,
             $this->_data,
             $this->_shareCallback
-        ));
+        );
     }
 
     /**
@@ -108,10 +113,14 @@ implements Serializable, Horde_Perms_Permission_Kolab_Storage
      */
     public function unserialize($data)
     {
-        $data = @unserialize($data);
+        $this->__unserialize(@unserialize($data));
+    }
+
+    public function __unserialize(array $data): void
+    {
         if (!is_array($data) ||
-            !isset($data[0]) ||
-            ($data[0] != self::VERSION)) {
+        !isset($data[0]) ||
+        ($data[0] != self::VERSION)) {
             throw new Exception('Cache version change');
         }
 
