@@ -102,7 +102,7 @@ class Horde_Share_Test_Sql_Base extends Horde_Share_TestBase
      public function testListOwners()
      {
         $owners = self::$share->listOwners();
-        $this->assertInternalType('array', $owners);
+        $this->assertIsArray($owners);
         $this->assertTrue(in_array('john', $owners));
      }
 
@@ -168,6 +168,7 @@ class Horde_Share_Test_Sql_Base extends Horde_Share_TestBase
      */
     public function testRemoveShare()
     {
+        $this->expectNotToPerformAssertions();
         $this->removeShare();
     }
 
@@ -184,7 +185,7 @@ class Horde_Share_Test_Sql_Base extends Horde_Share_TestBase
         $this->callbackSetShareOb(new Horde_Share_Object_Sql(array()));
     }
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         require_once __DIR__ . '/../migration/sql.php';
         migrate_sql(self::$db);
@@ -198,7 +199,7 @@ class Horde_Share_Test_Sql_Base extends Horde_Share_TestBase
         $GLOBALS['injector']->setInstance('Horde_Group', $group);
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         if (self::$db) {
             $migration = new Horde_Db_Migration_Base(self::$db);
@@ -210,7 +211,7 @@ class Horde_Share_Test_Sql_Base extends Horde_Share_TestBase
         }
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         if (!self::$db) {
             $this->markTestSkipped(self::$reason);

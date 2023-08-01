@@ -33,7 +33,7 @@ class Horde_Share_Kolab_MockTest extends Horde_Share_TestBase
 
     protected static $cache;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if (!class_exists('Horde_Kolab_Storage_Driver_Mock_Data')) {
             return;
@@ -89,7 +89,7 @@ class Horde_Share_Kolab_MockTest extends Horde_Share_TestBase
         }
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         if (!interface_exists('Horde_Kolab_Storage')) {
             $this->markTestSkipped('The Kolab_Storage package seems to be unavailable.');
@@ -219,6 +219,7 @@ class Horde_Share_Kolab_MockTest extends Horde_Share_TestBase
      */
     public function testRemoveShare()
     {
+        $this->expectNotToPerformAssertions();
         $this->removeShare();
     }
 

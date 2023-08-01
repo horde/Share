@@ -9,7 +9,7 @@ function migrate_sql($db)
         $migration->dropTable('test_shares');
         $migration->dropTable('test_shares_groups');
         $migration->dropTable('test_shares_users');
-    } catch (Horde_Db_Exception $e) {
+    } catch (Exception $e) {
     }
 
     $t = $migration->createTable('test_shares', array('autoincrementKey' => 'share_id'));

@@ -26,9 +26,9 @@
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
 class Horde_Share_Kolab_UnitTest
-extends PHPUnit_Framework_TestCase
+extends Horde_Test_Case
 {
-    public function setUp()
+    public function setUp(): void
     {
         if (!interface_exists('Horde_Kolab_Storage')) {
             $this->markTestSkipped('The Kolab_Storage package seems to be unavailable.');
@@ -37,8 +37,10 @@ extends PHPUnit_Framework_TestCase
 
     public function testGetStorage()
     {
-        $storage = $this->getMock('Horde_Kolab_Storage');
-        $list = $this->getMock('Horde_Kolab_Storage_List');
+        $storage = $this->getMockBuilder('Horde_Kolab_Storage')
+                        ->getMock();
+        $list = $this->getMockBuilder('Horde_Kolab_Storage_List')
+                     ->getMock();
         $storage->expects($this->once())
             ->method('getList')
             ->will($this->returnValue($list));
@@ -47,19 +49,16 @@ extends PHPUnit_Framework_TestCase
         $this->assertSame($list, $driver->getList());
     }
 
-    /**
-     * @expectedException Horde_Share_Exception
-     */
     public function testStorageMissing()
     {
+        $this->expectException('Horde_Share_Exception');
         $driver = $this->_getDriver();
         $driver->getStorage();
     }
 
     public function testListArray()
     {
-        $this->assertInternalType(
-            'array',
+        $this->assertIsArray(
             $this->_getCompleteDriver()->listShares('john')
         );
     }
@@ -69,7 +68,7 @@ extends PHPUnit_Framework_TestCase
         $driver = new Horde_Share_Kolab(
             'mnemo', 'john', new Horde_Perms_Null(), new Horde_Share_Stub_Group()
         );        
-        $this->assertInternalType('string', $driver->getType());
+        $this->assertIsString($driver->getType());
     }
 
     public function testMnemoSupport()
@@ -104,11 +103,9 @@ extends PHPUnit_Framework_TestCase
         $this->assertEquals('task', $driver->getType());
     }
 
-    /**
-     * @expectedException Horde_Share_Exception
-     */
     public function testSupportException()
     {
+        $this->expectException('Horde_Share_Exception');
         $driver = new Horde_Share_Kolab(
             'NOTSUPPORTED', 'john', new Horde_Perms_Null(), new Horde_Share_Stub_Group()
         );        
@@ -124,20 +121,16 @@ extends PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @expectedException Horde_Share_Exception
-     */
     public function testUndefinedId()
     {
+        $this->expectException('Horde_Share_Exception');
         $object = new Horde_Share_Object_Kolab(null, new Horde_Group_Mock());
         $object->getId();
     }
 
-    /**
-     * @expectedException Horde_Share_Exception
-     */
     public function testUndefinedName()
     {
+        $this->expectException('Horde_Share_Exception');
         $object = new Horde_Share_Object_Kolab(null, new Horde_Group_Mock());
         $object->getName();
     }
@@ -145,8 +138,7 @@ extends PHPUnit_Framework_TestCase
     public function testUndefinedPermissionId()
     {
         $object = new Horde_Share_Object_Kolab(null, new Horde_Group_Mock());
-        $this->assertInternalType(
-            'string',
+        $this->assertIsString(
             $object->getPermissionId()
         );
     }
@@ -229,11 +221,9 @@ extends PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @expectedException Horde_Exception_NotFound
-     */
     public function testMissingShare()
     {
+        $this->expectException('Horde_Exception_NotFound');
         $this->_getPrefilledDriver()->getShareById('DOES_NOT_EXIST');
     }
 
@@ -480,11 +470,9 @@ extends PHPUnit_Framework_TestCase
         $this->assertEquals('INBOX/test', $share->constructFolderName('john', 'test'));
     }
 
-    /**
-     * @expectedException Horde_Share_Exception
-     */
     public function testConstructFolderNameInComplexNamespace()
     {
+        $this->expectException('Horde_Share_Exception');
         $share = $this->_getComplexNamespaceDriver();
         $this->assertEquals('INBOX/test', $share->constructFolderName('john', 'test'));
     }
@@ -531,9 +519,14 @@ extends PHPUnit_Framework_TestCase
 
     public function testListShareCache()
     {
-        $storage = $this->getMock('Horde_Kolab_Storage');
-        $list = $this->getMock('Horde_Kolab_Storage_List_Tools', array(), array(), '', false, false);
-        $query = $this->getMock('Horde_Kolab_Storage_List_Query_List');
+        $storage = $this->getMockBuilder('Horde_Kolab_Storage')
+                        ->getMock();
+        $list = $this->getMockBuilder('Horde_Kolab_Storage_List_Tools')
+                     ->disableOriginalConstructor()
+                     ->disableOriginalClone()
+                     ->getMock();
+        $query = $this->getMockBuilder('Horde_Kolab_Storage_List_Query_List')
+                      ->getMock();
         $query->expects($this->once())
             ->method('listByType')
             ->will($this->returnValue(array()));

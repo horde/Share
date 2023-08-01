@@ -15,7 +15,7 @@ require_once __DIR__ . '/Base.php';
  */
 class Horde_Share_Sqlng_MysqliTest extends Horde_Share_Test_Sqlng_Base
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if (!extension_loaded('mysqli')) {
             self::$reason = 'No mysqli extension';
