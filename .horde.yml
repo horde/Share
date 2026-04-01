@@ -48,5 +48,4 @@ dependencies:
       horde/util: ^3
   optional:
     composer:
-      horde/kolab_storage: ^3
       horde/test: ^3
