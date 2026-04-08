@@ -1,5 +1,4 @@
 {
-    "minimum-stability": "dev",
     "name": "horde/share",
     "description": "Resource sharing library",
     "type": "library",
@@ -22,15 +21,14 @@
             "role": "lead"
         }
     ],
-    "time": "2022-10-08",
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://horde-satis.maintaina.com"
-        }
+    "keywords": [
+        "acl",
+        "ldap"
     ],
+    "time": "2026-04-08",
+    "repositories": [],
     "require": {
-        "php": "^7.4 || ^8",
+        "php": "^8.1",
         "horde/db": "^3 || dev-FRAMEWORK_6_0",
         "horde/exception": "^3 || dev-FRAMEWORK_6_0",
         "horde/group": "^3 || dev-FRAMEWORK_6_0",
@@ -41,10 +39,7 @@
         "horde/util": "^3 || dev-FRAMEWORK_6_0"
     },
     "require-dev": {},
-    "suggest": {
-        "horde/kolab_storage": "^3 || dev-FRAMEWORK_6_0",
-        "horde/test": "^3 || dev-FRAMEWORK_6_0"
-    },
+    "suggest": {},
     "autoload": {
         "psr-0": {
             "Horde_Share": "lib/"
@@ -56,8 +51,11 @@
         }
     },
     "config": {
-        "allow-plugins": {
-            "horde/horde-installer-plugin": true
+        "allow-plugins": {}
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-FRAMEWORK_6_0": "3.x-dev"
         }
     }
 }
