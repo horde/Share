@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Extension of the Horde_Share_Object class for storing share information in
  * the sql driver.
@@ -12,7 +13,7 @@ class Horde_Share_Object_Sql extends Horde_Share_Object implements Serializable
     /**
      * Serializable version.
      */
-    const VERSION = 2;
+    public const VERSION = 2;
 
     /**
      * The actual storage object that holds the data.
@@ -20,7 +21,7 @@ class Horde_Share_Object_Sql extends Horde_Share_Object implements Serializable
      * @TODO: Check visibility - should be protected/private
      * @var array
      */
-    public $data = array();
+    public $data = [];
 
     /**
      * Constructor.
@@ -33,19 +34,19 @@ class Horde_Share_Object_Sql extends Horde_Share_Object implements Serializable
             $data['share_parents'] = null;
         }
         if (!isset($data['perm']) || !is_array($data['perm'])) {
-            $this->data['perm'] = array(
-                'users' => array(),
+            $this->data['perm'] = [
+                'users' => [],
                 'type' => 'matrix',
                 'default' => isset($data['perm_default'])
-                    ? (int)$data['perm_default'] : 0,
+                    ? (int) $data['perm_default'] : 0,
                 'guest' => isset($data['perm_guest'])
-                    ? (int)$data['perm_guest'] : 0,
+                    ? (int) $data['perm_guest'] : 0,
                 'creator' => isset($data['perm_creator'])
-                    ? (int)$data['perm_creator'] : 0,
-                'groups' => array());
+                    ? (int) $data['perm_creator'] : 0,
+                'groups' => []];
 
             unset($data['perm_creator'], $data['perm_guest'],
-                  $data['perm_default']);
+                $data['perm_default']);
         }
         $this->data = array_merge($data, $this->data);
     }
@@ -62,11 +63,11 @@ class Horde_Share_Object_Sql extends Horde_Share_Object implements Serializable
 
     public function __serialize(): array
     {
-        return array(
+        return [
             self::VERSION,
             $this->data,
             $this->_shareCallback,
-        );
+        ];
     }
 
     /**
@@ -81,8 +82,8 @@ class Horde_Share_Object_Sql extends Horde_Share_Object implements Serializable
 
     public function __unserialize(array $data): void
     {
-        if (!isset($data[0]) ||
-            ($data[0] != self::VERSION)) {
+        if (!isset($data[0])
+            || ($data[0] != self::VERSION)) {
             throw new Exception('Cache version change');
         }
 
@@ -113,10 +114,10 @@ class Horde_Share_Object_Sql extends Horde_Share_Object implements Serializable
         if ($update) {
             $db = $this->getShareOb()->getStorage();
             // Manually convert the charset since we're not going through save()
-            $data = $this->getshareOb()->toDriverCharset(array($driver_key => $value));
+            $data = $this->getshareOb()->toDriverCharset([$driver_key => $value]);
             $sql = 'UPDATE ' . $this->getShareOb()->getTable() . ' SET ' . $driver_key . ' = ? WHERE share_id = ?';
             try {
-                $db->update($sql, array($data[$driver_key], $this->getId()));
+                $db->update($sql, [$data[$driver_key], $this->getId()]);
             } catch (Horde_Db_Exception $e) {
                 throw new Horde_Share_Exception($e);
             }
@@ -149,7 +150,7 @@ class Horde_Share_Object_Sql extends Horde_Share_Object implements Serializable
      */
     public function getId()
     {
-        return isset($this->data['share_id']) ? $this->data['share_id'] : null;
+        return $this->data['share_id'] ?? null;
     }
 
     /**
@@ -189,10 +190,12 @@ class Horde_Share_Object_Sql extends Horde_Share_Object implements Serializable
     public function getChildren($user, $perm = Horde_Perms::SHOW, $allLevels = true)
     {
         return $this->getShareOb()->listShares(
-            $user, array('perm' => $perm,
-                         'direction' => 1,
-                         'parent' => $this,
-                         'all_levels' => $allLevels));
+            $user,
+            ['perm' => $perm,
+                'direction' => 1,
+                'parent' => $this,
+                'all_levels' => $allLevels]
+        );
     }
 
     /**
@@ -212,7 +215,7 @@ class Horde_Share_Object_Sql extends Horde_Share_Object implements Serializable
      */
     public function getParents()
     {
-        $parents = array();
+        $parents = [];
         $share = $this->getParent();
         while ($share instanceof Horde_Share_Object) {
             $parents[] = $share;
@@ -237,12 +240,14 @@ class Horde_Share_Object_Sql extends Horde_Share_Object implements Serializable
 
         /* If we are an existing share, check for any children */
         if ($this->getId()) {
-            $children = $this->getShareOb()->listShares(null,
-                array('perm' => null,
-                      'parent' => $this,
-                      'all_levels' => true));
+            $children = $this->getShareOb()->listShares(
+                null,
+                ['perm' => null,
+                    'parent' => $this,
+                    'all_levels' => true]
+            );
         } else {
-            $children = array();
+            $children = [];
         }
 
         /* Can't set a child share as a parent */
@@ -258,7 +263,7 @@ class Horde_Share_Object_Sql extends Horde_Share_Object implements Serializable
         $this->data['share_parents'] = $parent_string;
         $sql = 'UPDATE ' . $this->getShareOb()->getTable() . ' SET share_parents = ? WHERE share_id = ?';
         try {
-            $this->getShareOb()->getStorage()->update($sql, array($this->data['share_parents'], $this->getId()));
+            $this->getShareOb()->getStorage()->update($sql, [$this->data['share_parents'], $this->getId()]);
         } catch (Horde_Db_Exception $e) {
             throw new Horde_Share_Exception($e->getMessage());
         }
@@ -280,8 +285,8 @@ class Horde_Share_Object_Sql extends Horde_Share_Object implements Serializable
         $db = $this->getShareOb()->getStorage();
         $table = $this->getShareOb()->getTable();
 
-        $fields = array();
-        $params = array();
+        $fields = [];
+        $params = [];
 
         // Build the parameter arrays for the sql statement.
         foreach ($this->getShareOb()->toDriverCharset($this->data) as $key => $value) {
@@ -292,13 +297,13 @@ class Horde_Share_Object_Sql extends Horde_Share_Object implements Serializable
         }
 
         $fields[] = 'perm_creator';
-        $params[] = isset($this->data['perm']['creator']) ? (int)$this->data['perm']['creator'] : 0;
+        $params[] = isset($this->data['perm']['creator']) ? (int) $this->data['perm']['creator'] : 0;
 
         $fields[] = 'perm_default';
-        $params[] = isset($this->data['perm']['default']) ? (int)$this->data['perm']['default'] : 0;
+        $params[] = isset($this->data['perm']['default']) ? (int) $this->data['perm']['default'] : 0;
 
         $fields[] = 'perm_guest';
-        $params[] = isset($this->data['perm']['guest']) ? (int)$this->data['perm']['guest'] : 0;
+        $params[] = isset($this->data['perm']['guest']) ? (int) $this->data['perm']['guest'] : 0;
 
         $fields[] = 'share_flags';
         $flags = 0;
@@ -329,20 +334,20 @@ class Horde_Share_Object_Sql extends Horde_Share_Object implements Serializable
         }
 
         // Update the share's user permissions
-        $db->delete('DELETE FROM ' . $table . '_users WHERE share_id = ?', array($this->data['share_id']));
+        $db->delete('DELETE FROM ' . $table . '_users WHERE share_id = ?', [$this->data['share_id']]);
         if (!empty($this->data['perm']['users'])) {
-            $data = array();
+            $data = [];
             foreach ($this->data['perm']['users'] as $user => $perm) {
-                $db->insert('INSERT INTO ' . $table . '_users (share_id, user_uid, perm) VALUES (?, ?, ?)', array($this->data['share_id'], $user, $perm));
+                $db->insert('INSERT INTO ' . $table . '_users (share_id, user_uid, perm) VALUES (?, ?, ?)', [$this->data['share_id'], $user, $perm]);
             }
         }
 
         // Update the share's group permissions
-        $db->delete('DELETE FROM ' . $table . '_groups WHERE share_id = ?', array($this->data['share_id']));
+        $db->delete('DELETE FROM ' . $table . '_groups WHERE share_id = ?', [$this->data['share_id']]);
         if (!empty($this->data['perm']['groups'])) {
-            $data = array();
+            $data = [];
             foreach ($this->data['perm']['groups'] as $group => $perm) {
-                $db->insert('INSERT INTO ' . $table . '_groups (share_id, group_uid, perm) VALUES (?, ?, ?)', array($this->data['share_id'], $group, $perm));
+                $db->insert('INSERT INTO ' . $table . '_groups (share_id, group_uid, perm) VALUES (?, ?, ?)', [$this->data['share_id'], $group, $perm]);
             }
         }
 
@@ -356,7 +361,7 @@ class Horde_Share_Object_Sql extends Horde_Share_Object implements Serializable
      */
     protected function _getAttributes()
     {
-        $attributes = array();
+        $attributes = [];
         foreach ($this->data as $attribute => $value) {
             if (strpos($attribute, 'attribute_') === 0) {
                 $attributes[substr($attribute, 10)] = $value;
@@ -408,9 +413,8 @@ class Horde_Share_Object_Sql extends Horde_Share_Object implements Serializable
     public function getPermission()
     {
         $perm = new Horde_Perms_Permission($this->getName());
-        $perm->data = isset($this->data['perm'])
-            ? $this->data['perm']
-            : array();
+        $perm->data = $this->data['perm']
+            ?? [];
 
         return $perm;
     }

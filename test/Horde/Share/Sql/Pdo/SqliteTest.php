@@ -1,25 +1,29 @@
 <?php
+
 /**
  * Prepare the test setup.
  */
+
 namespace Horde\Share\Sql\Pdo;
+
 use Horde\Share\Sql\BaseTestCase;
-use \Horde_Test_Factory_Db;
-use \Horde_Share_Stub_Group;
-use \PDO;
+use Horde_Test_Factory_Db;
+use Horde_Share_Stub_Group;
+use PDO;
 use Horde\Share\Horde_Perms;
-use \Horde_Support_Stub;
-use \Horde_Db_Migration_Base;
-use \Horde_Injector;
+use Horde_Support_Stub;
+use Horde_Db_Migration_Base;
+use Horde_Injector;
 
 /**
- * Copyright 2010-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2010-2026 Horde LLC (http://www.horde.org/)
  *
  * @author     Jan Schneider <jan@horde.org>
  * @category   Horde
  * @package    Share
  * @subpackage UnitTests
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
+ * @coversNothing
  */
 class SqliteTest extends BaseTestCase
 {

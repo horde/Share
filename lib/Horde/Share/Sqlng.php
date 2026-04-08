@@ -1,9 +1,10 @@
 <?php
+
 /**
  * Horde_Share_Sqlng provides the next-generation SQL backend driver for the
  * Horde_Share library.
  *
- * Copyright 2011-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2011-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -18,7 +19,7 @@
 class Horde_Share_Sqlng extends Horde_Share_Sql
 {
     /* Serializable version */
-    const VERSION = 1;
+    public const VERSION = 1;
 
     /**
      * The Horde_Share_Object subclass to instantiate objects as
@@ -35,15 +36,18 @@ class Horde_Share_Sqlng extends Horde_Share_Sql
      *
      * @param array
      */
-    protected $_availablePermissions = array();
+    protected $_availablePermissions = [];
 
     /**
      *
      * @see Horde_Share_Base::__construct()
      */
-    public function __construct($app, $user, Horde_Perms_Base $perms,
-                                Horde_Group_Base $groups)
-    {
+    public function __construct(
+        $app,
+        $user,
+        Horde_Perms_Base $perms,
+        Horde_Group_Base $groups
+    ) {
         parent::__construct($app, $user, $perms, $groups);
         $this->_table = $this->_app . '_sharesng';
     }
@@ -79,19 +83,21 @@ class Horde_Share_Sqlng extends Horde_Share_Sql
      * @return array  The shares the user has access to.
      * @throws Horde_Share_Exception
      */
-    public function listShares($userid, array $params = array())
+    public function listShares($userid, array $params = [])
     {
-        $params = array_merge(array('perm' => Horde_Perms::SHOW,
-                                    'attributes' => null,
-                                    'from' => 0,
-                                    'count' => 0,
-                                    'sort_by' => null,
-                                    'direction' => 0,
-                                    'parent' => null,
-                                    'all_levels' => true),
-                              $params);
+        $params = array_merge(
+            ['perm' => Horde_Perms::SHOW,
+                'attributes' => null,
+                'from' => 0,
+                'count' => 0,
+                'sort_by' => null,
+                'direction' => 0,
+                'parent' => null,
+                'all_levels' => true],
+            $params
+        );
 
-        $key = md5(serialize(array($userid, $params)));
+        $key = md5(serialize([$userid, $params]));
         if (isset($this->_listcache[$key])) {
             return $this->_listcache[$key];
         }
@@ -99,7 +105,7 @@ class Horde_Share_Sqlng extends Horde_Share_Sql
         $perms = $this->convertBitmaskToArray($params['perm']);
         $shareids = null;
         if (!empty($userid)) {
-            list($users, $groups, $shareids) = $this->_getUserAndGroupShares($userid, $perms);
+            [$users, $groups, $shareids] = $this->_getUserAndGroupShares($userid, $perms);
         }
 
         if (is_null($params['sort_by'])) {
@@ -110,12 +116,12 @@ class Horde_Share_Sqlng extends Horde_Share_Sql
             $sortfield = 'attribute_' . $params['sort_by'];
         }
         $where = $this->_getShareCriteria($userid, $perms, $params['attributes'], $shareids, $params['parent'], $params['all_levels']);
-        $query = 'SELECT ' . $this->_getDistinctClause() . ' FROM ' . $this->_table . ' s ' .
-            (!empty($where) ? ' WHERE ' . $where : '')
+        $query = 'SELECT ' . $this->_getDistinctClause() . ' FROM ' . $this->_table . ' s '
+            . (!empty($where) ? ' WHERE ' . $where : '')
             . ' ORDER BY ' . $sortfield
             . (($params['direction'] == 0) ? ' ASC' : ' DESC');
 
-        $query = $this->_db->addLimitOffset($query, array('limit' => $params['count'], 'offset' => $params['from']));
+        $query = $this->_db->addLimitOffset($query, ['limit' => $params['count'], 'offset' => $params['from']]);
 
         try {
             $rows = $this->_db->select($query);
@@ -123,10 +129,10 @@ class Horde_Share_Sqlng extends Horde_Share_Sql
             throw new Horde_Share_Exception($e);
         }
 
-        $sharelist = array();
-        $shares = array();
+        $sharelist = [];
+        $shares = [];
         foreach ($rows as $share) {
-            $shares[(int)$share['share_id']] = $this->_fromDriverCharset($share);
+            $shares[(int) $share['share_id']] = $this->_fromDriverCharset($share);
         }
         $this->_fetchClobFields($shares);
         foreach ($shares as $share) {
@@ -137,7 +143,7 @@ class Horde_Share_Sqlng extends Horde_Share_Sql
 
         // Run the results through the callback, if configured.
         if (!empty($this->_callbacks['list'])) {
-            $sharelist = $this->runCallback('list', array($userid, $sharelist, $params));
+            $sharelist = $this->runCallback('list', [$userid, $sharelist, $params]);
         }
         $this->_listcache[$key] = $sharelist;
 
@@ -159,7 +165,7 @@ class Horde_Share_Sqlng extends Horde_Share_Sql
             throw new Horde_Share_Exception($e->getMessage());
         }
 
-        $sharelist = array();
+        $sharelist = [];
         foreach ($rows as $share) {
             $this->_convertClobs($share);
             $data = $this->_fromDriverCharset($share);
@@ -187,13 +193,17 @@ class Horde_Share_Sqlng extends Horde_Share_Sql
      * @return integer  Number of shares the user has access to.
      * @throws Horde_Share_Exception
      */
-    public function countShares($userid, $perm = Horde_Perms::SHOW,
-        $attributes = null, $parent = null, $allLevels = true)
-    {
+    public function countShares(
+        $userid,
+        $perm = Horde_Perms::SHOW,
+        $attributes = null,
+        $parent = null,
+        $allLevels = true
+    ) {
         $perms = $this->convertBitmaskToArray($perm);
         $shareids = null;
         if (!empty($userid)) {
-            list(, , $shareids) = $this->_getUserAndGroupShares($userid, $perms);
+            [, , $shareids] = $this->_getUserAndGroupShares($userid, $perms);
         }
 
         $query = 'SELECT COUNT(DISTINCT share_id) FROM '
@@ -249,15 +259,19 @@ class Horde_Share_Sqlng extends Horde_Share_Sql
      * @return array  List of users.
      * @throws Horde_Share_Exception
      */
-    public function listOwners($perm = Horde_Perms::SHOW, $parent = null, $allLevels = true,
-                               $from = 0, $count = 0)
-    {
+    public function listOwners(
+        $perm = Horde_Perms::SHOW,
+        $parent = null,
+        $allLevels = true,
+        $from = 0,
+        $count = 0
+    ) {
         $perms = self::convertBitmaskToArray($perm);
         $sql = 'SELECT DISTINCT(s.share_owner) FROM ' . $this->_table . ' s WHERE '
             . $this->_getShareCriteria($this->_user, $perms, null, $parent, $allLevels);
 
         if ($count) {
-            $sql = $this->_db->addLimitOffset($sql, array('limit' => $count, 'offset' => $from));
+            $sql = $this->_db->addLimitOffset($sql, ['limit' => $count, 'offset' => $from]);
         }
 
         try {
@@ -266,7 +280,7 @@ class Horde_Share_Sqlng extends Horde_Share_Sql
             throw new Horde_Share_Exception($e);
         }
 
-        $owners = array();
+        $owners = [];
         foreach ($allowners as $owner) {
             if ($this->countShares($this->_user, $perm, $owner, $parent, $allLevels)) {
                 $owners[] = $owner;
@@ -285,7 +299,7 @@ class Horde_Share_Sqlng extends Horde_Share_Sql
      */
     public static function convertBitmaskToArray($perm)
     {
-        $perms = array();
+        $perms = [];
         for ($bit = 1; $perm; $bit *= 2, $perm >>= 1) {
             if ($perm % 2) {
                 $perms[] = $bit;
@@ -309,7 +323,7 @@ class Horde_Share_Sqlng extends Horde_Share_Sql
             if (substr($column, 0, 5) != 'perm_') {
                 continue;
             }
-            $perm = (int)substr($column, 5);
+            $perm = (int) substr($column, 5);
             $this->_availablePermissions[$perm] = true;
             if ($value) {
                 $perms |= $perm;
@@ -333,7 +347,7 @@ class Horde_Share_Sqlng extends Horde_Share_Sql
             if ($perm[0] != 'perm' || count($perm) != 3) {
                 continue;
             }
-            $permvalue = (int)$perm[2];
+            $permvalue = (int) $perm[2];
             $this->_availablePermissions[$permvalue] = true;
             if ($value) {
                 $data['perm'][$perm[1]] |= $permvalue;
@@ -353,11 +367,11 @@ class Horde_Share_Sqlng extends Horde_Share_Sql
      */
     protected function _getUserAndGroupShares($userid, array $perms)
     {
-        $shareids = array();
+        $shareids = [];
 
         // Get users permissions.
         $query = 'SELECT * FROM ' . $this->_table
-            . '_users WHERE user_uid = ' .  $this->_db->quote($userid)
+            . '_users WHERE user_uid = ' . $this->_db->quote($userid)
             . ' AND (' . $this->_getPermsCriteria('perm', $perms) . ')';
         try {
             $users = $this->_db->select($query);
@@ -369,13 +383,13 @@ class Horde_Share_Sqlng extends Horde_Share_Sql
         }
 
         // Get groups permissions.
-        $groups = array();
+        $groups = [];
         try {
             $groupNames = $this->_groups->listGroups($userid);
             if ($groupNames) {
-                $group_ids = array();
+                $group_ids = [];
                 foreach (array_keys($groupNames) as $id) {
-                    $group_ids[] = $this->_db->quote((string)$id);
+                    $group_ids[] = $this->_db->quote((string) $id);
                 }
                 $query = 'SELECT * FROM ' . $this->_table
                     . '_groups WHERE group_uid IN ('
@@ -394,7 +408,7 @@ class Horde_Share_Sqlng extends Horde_Share_Sql
             $this->_logger->err($e);
         }
 
-        return array($users, $groups, array_unique($shareids));
+        return [$users, $groups, array_unique($shareids)];
     }
 
     /**
@@ -409,10 +423,14 @@ class Horde_Share_Sqlng extends Horde_Share_Sql
      *
      * @return string  The criteria string for fetching this user's shares.
      */
-    protected function _getShareCriteria($userid, array $perms, $attributes,
-                                         $shareids = null, $parent = null,
-                                         $allLevels = true)
-    {
+    protected function _getShareCriteria(
+        $userid,
+        array $perms,
+        $attributes,
+        $shareids = null,
+        $parent = null,
+        $allLevels = true
+    ) {
         /* Convert to driver's keys */
         $attributes = $this->_toDriverKeys($attributes);
 
@@ -442,7 +460,7 @@ class Horde_Share_Sqlng extends Horde_Share_Sql
             $where = '(' . $where . ') ';
             foreach ($attributes as $key => $value) {
                 if (is_array($value)) {
-                    $value = array_map(array($this->_db, 'quote'), $value);
+                    $value = array_map([$this->_db, 'quote'], $value);
                     $where .= ' AND ' . $key . ' IN (' . implode(', ', $value) . ')';
                 } else {
                     $where .= ' AND ' . $key . ' = ' . $this->_db->quote($value);
@@ -494,7 +512,7 @@ class Horde_Share_Sqlng extends Horde_Share_Sql
      */
     protected function _getPermsCriteria($base, array $perms)
     {
-        $criteria = array();
+        $criteria = [];
         foreach ($perms as $perm) {
             $criteria[] = $base . '_' . $perm . ' = ' . $this->_db->quoteTrue();
         }

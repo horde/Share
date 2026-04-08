@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2010-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2010-2026 Horde LLC (http://www.horde.org/)
  *
  * @author     Jan Schneider <jan@horde.org>
  * @category   Horde
@@ -8,15 +9,20 @@
  * @subpackage UnitTests
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
-namespace Horde\Share\Sql;
-use Horde\Share\TestBase as TestBase;
-use \Horde_Share_Stub_Group;
-use \Horde_Share_Sql;
-use \Horde_Perms_Sql;
-use \Horde_Injector;
-use \Horde_Share_Object_Sql;
-use \Horde_Db_Migration_Base;
 
+namespace Horde\Share\Sql;
+
+use Horde\Share\TestBase as TestBase;
+use Horde_Share_Stub_Group;
+use Horde_Share_Sql;
+use Horde_Perms_Sql;
+use Horde_Injector;
+use Horde_Share_Object_Sql;
+use Horde_Db_Migration_Base;
+
+/**
+ * @coversNothing
+ */
 class BaseTestCase extends TestBase
 {
     protected static $db;
@@ -108,21 +114,21 @@ class BaseTestCase extends TestBase
     /**
      * @depends testPermissions
      */
-     public function testListOwners()
-     {
+    public function testListOwners()
+    {
         $owners = self::$share->listOwners();
         $this->assertIsArray($owners);
         $this->assertTrue(in_array('john', $owners));
-     }
+    }
 
     /**
      * @depends testPermissions
      */
-     public function testCountOwners()
-     {
+    public function testCountOwners()
+    {
         $count = self::$share->countOwners();
         $this->assertTrue($count > 0);
-     }
+    }
 
     /**
      * @depends testPermissions
@@ -190,7 +196,7 @@ class BaseTestCase extends TestBase
 
     public function testCallback()
     {
-        $this->callbackSetShareOb(new Horde_Share_Object_Sql(array()));
+        $this->callbackSetShareOb(new Horde_Share_Object_Sql([]));
     }
 
     public static function setUpBeforeClass(): void
@@ -199,7 +205,7 @@ class BaseTestCase extends TestBase
         migrate_sql(self::$db);
 
         $group = new Horde_Share_Stub_Group();
-        self::$share = new Horde_Share_Sql('test', 'john', new Horde_Perms_Sql(array('db' => self::$db)), $group);
+        self::$share = new Horde_Share_Sql('test', 'john', new Horde_Perms_Sql(['db' => self::$db]), $group);
         self::$share->setStorage(self::$db);
 
         // FIXME

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Abstract class for storing Share information.
  *
@@ -101,7 +102,7 @@ abstract class Horde_Share_Object implements Serializable
      */
     public function save()
     {
-        $this->getShareOb()->runCallback('modify', array($this));
+        $this->getShareOb()->runCallback('modify', [$this]);
         $this->getShareOb()->expireListCache();
         return $this->_save();
     }
@@ -120,12 +121,12 @@ abstract class Horde_Share_Object implements Serializable
      */
     public function toHash()
     {
-        return array(
+        return [
             'id' => $this->getId(),
             'name' => $this->getName(),
             'attributes' => $this->_getAttributes(),
             'permissions' => $this->getPermission()->getData(),
-        );
+        ];
     }
 
     /**
@@ -330,8 +331,11 @@ abstract class Horde_Share_Object implements Serializable
      *
      * @return boolean  Whether or not $userid has $permission.
      */
-    abstract public function hasPermission($userid, $permission,
-                                           $creator = null);
+    abstract public function hasPermission(
+        $userid,
+        $permission,
+        $creator = null
+    );
 
     /**
      * Sets the permission of this share.

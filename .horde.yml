@@ -36,7 +36,7 @@ license:
   uri: http://www.horde.org/licenses/lgpl21
 dependencies:
   required:
-    php: ^7.4 || ^8
+    php: ^8.1
     composer:
       horde/db: ^3
       horde/exception: ^3
@@ -46,6 +46,7 @@ dependencies:
       horde/translation: ^3
       horde/url: ^3
       horde/util: ^3
-  optional:
-    composer:
-      horde/test: ^3
+keywords:
+  - acl
+  - ldap
+vendor: horde

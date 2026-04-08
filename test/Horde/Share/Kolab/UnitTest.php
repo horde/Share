@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Unit testing for the Kolab driver.
  *
@@ -10,14 +11,16 @@
  * @author     Gunnar Wrobel <wrobel@pardus.de>
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
+
 namespace Horde\Share;
-use \Kolab;
+
+use Kolab;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit testing for the Kolab driver.
  *
- * Copyright 2011-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2011-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -27,6 +30,7 @@ use PHPUnit\Framework\TestCase;
  * @subpackage UnitTests
  * @author     Gunnar Wrobel <wrobel@pardus.de>
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
+ * @coversNothing
  */
 class UnitTest extends TestCase
 {
@@ -69,40 +73,55 @@ class UnitTest extends TestCase
     public function testGetTypeString()
     {
         $driver = new Horde_Share_Kolab(
-            'mnemo', 'john', new Horde_Perms_Null(), new Horde_Share_Stub_Group()
-        );        
+            'mnemo',
+            'john',
+            new Horde_Perms_Null(),
+            new Horde_Share_Stub_Group()
+        );
         $this->assertInternalType('string', $driver->getType());
     }
 
     public function testMnemoSupport()
     {
         $driver = new Horde_Share_Kolab(
-            'mnemo', 'john', new Horde_Perms_Null(), new Horde_Share_Stub_Group()
-        );        
+            'mnemo',
+            'john',
+            new Horde_Perms_Null(),
+            new Horde_Share_Stub_Group()
+        );
         $this->assertEquals('note', $driver->getType());
     }
 
     public function testKronolithSupport()
     {
         $driver = new Horde_Share_Kolab(
-            'kronolith', 'john', new Horde_Perms_Null(), new Horde_Share_Stub_Group()
-        );        
+            'kronolith',
+            'john',
+            new Horde_Perms_Null(),
+            new Horde_Share_Stub_Group()
+        );
         $this->assertEquals('event', $driver->getType());
     }
 
     public function testTurbaSupport()
     {
         $driver = new Horde_Share_Kolab(
-            'turba', 'john', new Horde_Perms_Null(), new Horde_Share_Stub_Group()
-        );        
+            'turba',
+            'john',
+            new Horde_Perms_Null(),
+            new Horde_Share_Stub_Group()
+        );
         $this->assertEquals('contact', $driver->getType());
     }
 
     public function testNagSupport()
     {
         $driver = new Horde_Share_Kolab(
-            'nag', 'john', new Horde_Perms_Null(), new Horde_Share_Stub_Group()
-        );        
+            'nag',
+            'john',
+            new Horde_Perms_Null(),
+            new Horde_Share_Stub_Group()
+        );
         $this->assertEquals('task', $driver->getType());
     }
 
@@ -112,14 +131,17 @@ class UnitTest extends TestCase
     public function testSupportException()
     {
         $driver = new Horde_Share_Kolab(
-            'NOTSUPPORTED', 'john', new Horde_Perms_Null(), new Horde_Share_Stub_Group()
-        );        
+            'NOTSUPPORTED',
+            'john',
+            new Horde_Perms_Null(),
+            new Horde_Share_Stub_Group()
+        );
     }
 
     public function testListIds()
     {
         $this->assertEquals(
-            array('internal_id'),
+            ['internal_id'],
             array_keys(
                 $this->_getPrefilledDriver()->listShares('john')
             )
@@ -158,7 +180,8 @@ class UnitTest extends TestCase
         $share = $this->_getCompleteDriver();
         $object = $share->newShare('john', 'IGNORED', 'test');
         $this->assertEquals(
-            array('john', 'test', 'INBOX'), $this->_decodeId($object->getId())
+            ['john', 'test', 'INBOX'],
+            $this->_decodeId($object->getId())
         );
     }
 
@@ -222,7 +245,7 @@ class UnitTest extends TestCase
     public function testGetShareById()
     {
         $this->assertEquals(
-            array('john', 'Calendar'),
+            ['john', 'Calendar'],
             $this->_decodeId(
                 $this->_getPrefilledDriver()
                 ->getShareById($this->_getId('john', 'Calendar'))
@@ -296,10 +319,10 @@ class UnitTest extends TestCase
         $share->set('other', 'OTHER');
         $share->save();
         $this->assertEquals(
-            array(
+            [
                 'other' => 'OTHER',
-                'share_name' => 'internal_id'
-            ),
+                'share_name' => 'internal_id',
+            ],
             $this->list
             ->getQuery(Horde_Kolab_Storage_List_Tools::QUERY_SHARE)
             ->getParameters('INBOX/Calendar')
@@ -349,10 +372,10 @@ class UnitTest extends TestCase
             ->getQuery(Horde_Kolab_Storage_List_Tools::QUERY_SHARE)
             ->getParameters('INBOX/test');
         $this->assertEquals(
-            array(
+            [
                 'other' => 'OTHER',
-                'share_name' => 'SHARE'
-            ),
+                'share_name' => 'SHARE',
+            ],
             $result
         );
     }
@@ -403,7 +426,7 @@ class UnitTest extends TestCase
         $object = $share->newShare('john', 'IGNORED', 'Test');
         $share->addShare($object);
         $this->assertEquals(
-            array('john', 'Test'),
+            ['john', 'Test'],
             $this->_decodeId(
                 $share->getShareById($this->_getId('john', 'Test'))->getId()
             )
@@ -440,7 +463,7 @@ class UnitTest extends TestCase
         $object->addUserPermission('tina', Horde_Perms::SHOW);
         $share->addShare($object);
         $this->assertEquals(
-            array('tina' => Horde_Perms::SHOW),
+            ['tina' => Horde_Perms::SHOW],
             $share->getShareById($this->_getId('john', 'Test'))
                 ->getPermission()->getUserPermissions()
         );
@@ -509,8 +532,8 @@ class UnitTest extends TestCase
             ->getShareById($this->_getId('john', 'Calendar'));
         $share->set('desc', 'NEW');
         $share->save();
-        $query = 
-        $this->assertEquals(
+        $query
+        = $this->assertEquals(
             'NEW',
             $this->list
             ->getQuery(Horde_Kolab_Storage_List_Tools::QUERY_SHARE)
@@ -534,11 +557,11 @@ class UnitTest extends TestCase
     public function testListShareCache()
     {
         $storage = $this->getMock('Horde_Kolab_Storage');
-        $list = $this->getMock('Horde_Kolab_Storage_List_Tools', array(), array(), '', false, false);
+        $list = $this->getMock('Horde_Kolab_Storage_List_Tools', [], [], '', false, false);
         $query = $this->getMock('Horde_Kolab_Storage_List_Query_List');
         $query->expects($this->once())
             ->method('listByType')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
         $list->expects($this->exactly(3))
             ->method('getQuery')
             ->will($this->returnValue($query));
@@ -557,7 +580,7 @@ class UnitTest extends TestCase
             1,
             count(
                 $this->_getPermissionDriver()
-                ->listShares('john', array('perm' => Horde_Perms::EDIT))
+                ->listShares('john', ['perm' => Horde_Perms::EDIT])
             )
         );
     }
@@ -568,7 +591,7 @@ class UnitTest extends TestCase
             3,
             count(
                 $this->_getHierarchyDriver()
-                ->listShares('john', array('all_levels' => false))
+                ->listShares('john', ['all_levels' => false])
             )
         );
     }
@@ -601,27 +624,27 @@ class UnitTest extends TestCase
     private function _getDriverWithData($data)
     {
         $factory = new Horde_Kolab_Storage_Factory(
-            array(
+            [
                 'driver' => 'mock',
-                'queries' => array(
-                    'list' => array(
-                        Horde_Kolab_Storage_List_Tools::QUERY_BASE => array(
-                            'cache' => true
-                        ),
-                        Horde_Kolab_Storage_List_Tools::QUERY_ACL => array(
-                            'cache' => true
-                        ),
-                        Horde_Kolab_Storage_List_Tools::QUERY_SHARE => array(
-                            'cache' => true
-                        ),
-                    )
-                ),
+                'queries' => [
+                    'list' => [
+                        Horde_Kolab_Storage_List_Tools::QUERY_BASE => [
+                            'cache' => true,
+                        ],
+                        Horde_Kolab_Storage_List_Tools::QUERY_ACL => [
+                            'cache' => true,
+                        ],
+                        Horde_Kolab_Storage_List_Tools::QUERY_SHARE => [
+                            'cache' => true,
+                        ],
+                    ],
+                ],
                 'params' => $data,
                 'cache'  => new Horde_Cache(
                     new Horde_Cache_Storage_Mock()
                 ),
-                'logger' => new Horde_Log_Logger()
-            )
+                'logger' => new Horde_Log_Logger(),
+            ]
         );
         $driver = $this->_getDriver('kronolith');
         $this->storage = $factory->create();
@@ -633,122 +656,125 @@ class UnitTest extends TestCase
 
     private function _getPrefilledData()
     {
-        return array(
+        return [
             'username' => 'john',
             'data'   => $this->_getMockData(
-                array(
-                    'user/john' => array(),
-                    'user/john/Calendar' => array(
-                        'a' => array(
+                [
+                    'user/john' => [],
+                    'user/john/Calendar' => [
+                        'a' => [
                             '/shared/vendor/kolab/folder-type' => 'event.default',
                             '/shared/comment' => 'DESCRIPTION',
-                            '/shared/vendor/horde/share-params' => base64_encode(serialize(array('share_name' => 'internal_id'))),
-                        ),
-                    ),
-                )
+                            '/shared/vendor/horde/share-params' => base64_encode(serialize(['share_name' => 'internal_id'])),
+                        ],
+                    ],
+                ]
             ),
-        );
+        ];
     }
 
     private function _getCompleteData()
     {
-        return array(
+        return [
             'username' => 'john',
             'data'   => $this->_getMockData(
-                array(
+                [
                     'user/john' => null,
-                )
+                ]
             ),
-        );
+        ];
     }
 
     private function _getComplexNamespaceData()
     {
-        return array(
+        return [
             'username' => 'john',
             'data'   => $this->_getMockData(
-                array(
+                [
                     'user/john' => null,
-                )
+                ]
             ),
-            'namespaces' => array(
-                array(
+            'namespaces' => [
+                [
                     'type' => Horde_Kolab_Storage_Folder_Namespace::PERSONAL,
                     'name' => 'INBOX/',
                     'delimiter' => '/',
                     'add' => true,
-                ),
-                array(
+                ],
+                [
                     'type' => Horde_Kolab_Storage_Folder_Namespace::PERSONAL,
                     'name' => 'SECOND/',
                     'delimiter' => '/',
                     'add' => true,
-                ),
-            )
-        );
+                ],
+            ],
+        ];
     }
 
     private function _getPermissionData()
     {
-        return array(
+        return [
             'username' => 'john',
             'data'   => $this->_getMockData(
-                array(
-                    'user/john' => array(),
-                    'user/john/Calendar' => array(
+                [
+                    'user/john' => [],
+                    'user/john/Calendar' => [
                         't' => 'event.default',
-                        'p' => array('john' => 'alrid'),
-                    ),
-                    'user/john/Listable' => array(
+                        'p' => ['john' => 'alrid'],
+                    ],
+                    'user/john/Listable' => [
                         't' => 'event',
-                        'p' => array('john' => 'l'),
-                    ),
-                )
+                        'p' => ['john' => 'l'],
+                    ],
+                ]
             ),
-        );
+        ];
     }
 
     private function _getHierarchyData()
     {
-        return array(
+        return [
             'username' => 'john',
             'data'   => $this->_getMockData(
-                array(
-                    'user/john' => array(),
-                    'user/john/Calendar' => array('t' => 'event.default'),
+                [
+                    'user/john' => [],
+                    'user/john/Calendar' => ['t' => 'event.default'],
                     'user/john/Calendar/Private' => null,
-                    'user/john/Calendar/Private/Family' => array('t' => 'event'),
-                    'user/john/Calendar/Private/Family/Cooking' => array('t' => 'event'),
-                    'user/john/Calendar/Private/Family/Party' => array('t' => 'event'),
-                    'user/john/Work' => array('t' => 'event'),
-                )
+                    'user/john/Calendar/Private/Family' => ['t' => 'event'],
+                    'user/john/Calendar/Private/Family/Cooking' => ['t' => 'event'],
+                    'user/john/Calendar/Private/Family/Party' => ['t' => 'event'],
+                    'user/john/Work' => ['t' => 'event'],
+                ]
             ),
-        );
+        ];
     }
 
     private function _getDriver($app = 'mnemo')
     {
         return new Horde_Share_Kolab(
-            $app, 'john', new Horde_Perms_Null(), new Horde_Share_Stub_Group()
+            $app,
+            'john',
+            new Horde_Perms_Null(),
+            new Horde_Share_Stub_Group()
         );
     }
 
     private function _getMockData($elements)
     {
-        $result = array();
+        $result = [];
         foreach ($elements as $path => $element) {
             if (!isset($element['p'])) {
-                $folder = array('permissions' => array('anyone' => 'alrid'));
+                $folder = ['permissions' => ['anyone' => 'alrid']];
             } else {
-                $folder = array('permissions' => $element['p']);
+                $folder = ['permissions' => $element['p']];
             }
             if (isset($element['a'])) {
                 $folder['annotations'] = $element['a'];
             }
             if (isset($element['t'])) {
-                $folder['annotations'] = array(
+                $folder['annotations'] = [
                     '/shared/vendor/kolab/folder-type' => $element['t'],
-                );
+                ];
             }
             $result[$path] = $folder;
         }
@@ -757,7 +783,7 @@ class UnitTest extends TestCase
 
     private function _getId($owner, $name)
     {
-        return base64_encode(serialize(array($owner, $name)));
+        return base64_encode(serialize([$owner, $name]));
     }
 
     private function _decodeId($id)

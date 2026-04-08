@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2010-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2010-2026 Horde LLC (http://www.horde.org/)
  *
  * @author     Jan Schneider <jan@horde.org>
  * @category   Horde
@@ -8,16 +9,21 @@
  * @subpackage UnitTests
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
-namespace Horde\Share;
-use Horde_Test_Case as TestCase;
-use \Horde_Perms;
-use \Horde_Support_Stub;
 
+namespace Horde\Share;
+
+use Horde_Test_Case as TestCase;
+use Horde_Perms;
+use Horde_Support_Stub;
+
+/**
+ * @coversNothing
+ */
 class TestBase extends TestCase
 {
     protected static $share;
 
-    protected static $shares = array();
+    protected static $shares = [];
 
     public function getApp($app)
     {
@@ -218,13 +224,13 @@ class TestBase extends TestCase
         $this->assertEquals(self::$shares['jane']['janeshare'], $janeshare);
         $users = $janeshare->listUsers();
         sort($users);
-        $this->assertEquals(array('jane', 'john', 'peter'), $users);
+        $this->assertEquals(['jane', 'john', 'peter'], $users);
         $users = $janeshare->listUsers(Horde_Perms::EDIT);
         sort($users);
-        $this->assertEquals(array('jane', 'john'), $users);
+        $this->assertEquals(['jane', 'john'], $users);
         $users = $janeshare->listUsers(Horde_Perms::DELETE);
         sort($users);
-        $this->assertEquals(array('jane'), $users);
+        $this->assertEquals(['jane'], $users);
         $this->assertEquals('Jane\'s Share', $janeshare->get('name'));
         $this->assertTrue($janeshare->hasPermission('john', Horde_Perms::EDIT));
 
@@ -232,9 +238,9 @@ class TestBase extends TestCase
         $groupshare->getPermission();
         $this->assertInstanceOf('Horde_Share_Object', $groupshare);
         $this->assertEquals(self::$shares['jane']['groupshare'], $groupshare);
-        $this->assertEquals(array('mygroup'), $groupshare->listGroups());
-        $this->assertEquals(array(), $groupshare->listGroups(Horde_Perms::EDIT));
-        $this->assertEquals(array('mygroup'), $groupshare->listGroups(Horde_Perms::DELETE));
+        $this->assertEquals(['mygroup'], $groupshare->listGroups());
+        $this->assertEquals([], $groupshare->listGroups(Horde_Perms::EDIT));
+        $this->assertEquals(['mygroup'], $groupshare->listGroups(Horde_Perms::DELETE));
         $this->assertEquals('Group Share', $groupshare->get('name'));
 
         $this->switchAuth('john');
@@ -254,10 +260,11 @@ class TestBase extends TestCase
 
     protected function _getShares()
     {
-        $newshares = self::$share->getShares(array(self::$shares['myshare']->getId(), self::$shares['janeshare']->getId(), self::$shares['groupshare']->getId()));
+        $newshares = self::$share->getShares([self::$shares['myshare']->getId(), self::$shares['janeshare']->getId(), self::$shares['groupshare']->getId()]);
         $this->assertEquals(
-            array('myshare', 'janeshare', 'groupshare'),
-            array_keys($newshares));
+            ['myshare', 'janeshare', 'groupshare'],
+            array_keys($newshares)
+        );
         $this->assertInstanceOf('Horde_Share_Object', $newshares['myshare']);
         $this->assertEquals(self::$shares['myshare'], $newshares['myshare']);
         $newshares['janeshare']->getPermission();
@@ -319,19 +326,21 @@ class TestBase extends TestCase
         $this->assertEquals(5, count($shares));
 
         // Test arguments for default listing.
-        $this->assertEquals($shares, self::$share->listShares('john', array('perm' => Horde_Perms::SHOW, 'attributes' => null, 'from' => 0, 'count' => 0, 'sort_by' => null, 'direction' => 0)));
+        $this->assertEquals($shares, self::$share->listShares('john', ['perm' => Horde_Perms::SHOW, 'attributes' => null, 'from' => 0, 'count' => 0, 'sort_by' => null, 'direction' => 0]));
 
         // Getting back the correct shares?
-        $shares = self::$share->listShares('john', array('all_levels' => false, 'sort_by' => 'id'));
+        $shares = self::$share->listShares('john', ['all_levels' => false, 'sort_by' => 'id']);
         $this->assertSortedById(
-            array('myshare', 'systemshare', 'janeshare', 'groupshare'),
-            $shares);
+            ['myshare', 'systemshare', 'janeshare', 'groupshare'],
+            $shares
+        );
 
         // Shares of a certain owner.
-        $shares = self::$share->listShares('john', array('attributes' => 'jane', 'sort_by' => 'id'));
+        $shares = self::$share->listShares('john', ['attributes' => 'jane', 'sort_by' => 'id']);
         $this->assertSortedById(
-            array('janeshare', 'groupshare'),
-            $shares);
+            ['janeshare', 'groupshare'],
+            $shares
+        );
     }
 
     public function _listSharesGuest()
@@ -339,10 +348,11 @@ class TestBase extends TestCase
         $this->switchAuth(null);
 
         // Guest shares.
-        $shares = self::$share->listShares(false, array('perm' => Horde_Perms::SHOW, 'sort_by' => 'id'));
+        $shares = self::$share->listShares(false, ['perm' => Horde_Perms::SHOW, 'sort_by' => 'id']);
         $this->assertEquals(
-            array('systemshare'),
-            array_keys($shares));
+            ['systemshare'],
+            array_keys($shares)
+        );
 
         $this->switchAuth('john');
     }
@@ -350,76 +360,84 @@ class TestBase extends TestCase
     public function _listSharesJohnTwo()
     {
         // Shares with certain permissions.
-        $this->assertEquals(5, count(self::$share->listShares('john', array('perm' => Horde_Perms::READ))));
-        $shares = self::$share->listShares('john', array('perm' => Horde_Perms::EDIT, 'sort_by' => 'id'));
+        $this->assertEquals(5, count(self::$share->listShares('john', ['perm' => Horde_Perms::READ])));
+        $shares = self::$share->listShares('john', ['perm' => Horde_Perms::EDIT, 'sort_by' => 'id']);
         $this->assertSortedById(
-            array('myshare', 'mychildshare', 'janeshare'),
+            ['myshare', 'mychildshare', 'janeshare'],
             $shares
         );
 
         // Again with only toplevel
-        $shares = self::$share->listShares('john', array('all_levels' => false, 'perm' => Horde_Perms::EDIT, 'sort_by' => 'id'));
+        $shares = self::$share->listShares('john', ['all_levels' => false, 'perm' => Horde_Perms::EDIT, 'sort_by' => 'id']);
         $this->assertSortedById(
-            array('myshare', 'janeshare'),
+            ['myshare', 'janeshare'],
             $shares
         );
 
-        $shares = self::$share->listShares('john', array('perm' => Horde_Perms::DELETE, 'sort_by' => 'id'));
+        $shares = self::$share->listShares('john', ['perm' => Horde_Perms::DELETE, 'sort_by' => 'id']);
         $this->assertSortedById(
-            array('myshare', 'mychildshare', 'groupshare'),
+            ['myshare', 'mychildshare', 'groupshare'],
             $shares
         );
 
-        $shares = self::$share->listShares('john', array('perm' => Horde_Perms::EDIT | Horde_Perms::DELETE, 'sort_by' => 'id'));
+        $shares = self::$share->listShares('john', ['perm' => Horde_Perms::EDIT | Horde_Perms::DELETE, 'sort_by' => 'id']);
         $this->assertSortedById(
-            array('myshare', 'mychildshare', 'janeshare', 'groupshare'),
+            ['myshare', 'mychildshare', 'janeshare', 'groupshare'],
             $shares
         );
-        $shares = self::$share->listShares('john', array('perm' => Horde_Perms::ALL));
+        $shares = self::$share->listShares('john', ['perm' => Horde_Perms::ALL]);
         $this->assertIsArray($shares);
         $this->assertEquals(5, count($shares));
 
         // Paging.
-        $all_shares = self::$share->listShares('john', array('perm' => Horde_Perms::ALL, 'sort_by' => 'id'));
+        $all_shares = self::$share->listShares('john', ['perm' => Horde_Perms::ALL, 'sort_by' => 'id']);
         $this->assertSortedById(
-            array('janeshare', 'groupshare', 'myshare', 'mychildshare', 'systemshare'),
-            $all_shares);
-        $shares = self::$share->listShares('john', array('perm' => Horde_Perms::ALL, 'sort_by' => 'id', 'from' => 2, 'count' => 2));
+            ['janeshare', 'groupshare', 'myshare', 'mychildshare', 'systemshare'],
+            $all_shares
+        );
+        $shares = self::$share->listShares('john', ['perm' => Horde_Perms::ALL, 'sort_by' => 'id', 'from' => 2, 'count' => 2]);
         $this->assertEquals(
             array_slice(array_keys($all_shares), 2, 2),
-            array_keys($shares));
+            array_keys($shares)
+        );
 
         // Paging with top level only
-        $all_top_shares = self::$share->listShares('john', array('all_levels' => false, 'perm' => Horde_Perms::ALL, 'sort_by' => 'id'));
+        $all_top_shares = self::$share->listShares('john', ['all_levels' => false, 'perm' => Horde_Perms::ALL, 'sort_by' => 'id']);
         $this->assertSortedById(
-            array('janeshare', 'groupshare', 'myshare', 'systemshare'),
-            $all_top_shares);
-        $shares = self::$share->listShares('john', array('all_levels' => false, 'perm' => Horde_Perms::ALL, 'sort_by' => 'id', 'from' => 2, 'count' => 2));
+            ['janeshare', 'groupshare', 'myshare', 'systemshare'],
+            $all_top_shares
+        );
+        $shares = self::$share->listShares('john', ['all_levels' => false, 'perm' => Horde_Perms::ALL, 'sort_by' => 'id', 'from' => 2, 'count' => 2]);
         $this->assertEquals(
             array_slice(array_keys($all_top_shares), 2, 2),
-            array_keys($shares));
+            array_keys($shares)
+        );
 
         // Restrict to children of a share only
-        $shares = self::$share->listShares('john', array('perm' => Horde_Perms::ALL, 'parent' => self::$shares['myshare']));
+        $shares = self::$share->listShares('john', ['perm' => Horde_Perms::ALL, 'parent' => self::$shares['myshare']]);
         $this->assertEquals(
-            array('mychildshare'),
-            array_keys($shares));
+            ['mychildshare'],
+            array_keys($shares)
+        );
 
         // Sort order and direction.
-        $shares = self::$share->listShares('john', array('perm' => Horde_Perms::ALL, 'sort_by' => 'id', 'direction' => 1));
+        $shares = self::$share->listShares('john', ['perm' => Horde_Perms::ALL, 'sort_by' => 'id', 'direction' => 1]);
         $this->assertSortedById(
-            array('groupshare', 'janeshare', 'systemshare', 'mychildshare', 'myshare'),
-            array_reverse($shares));
+            ['groupshare', 'janeshare', 'systemshare', 'mychildshare', 'myshare'],
+            array_reverse($shares)
+        );
 
         // Attribute searching.
-        $shares = self::$share->listShares('john', array('attributes' => array('name' => 'Jane\'s Share')));
+        $shares = self::$share->listShares('john', ['attributes' => ['name' => 'Jane\'s Share']]);
         $this->assertEquals(
-            array('janeshare'),
-            array_keys($shares));
-        $shares = self::$share->listShares('john', array('attributes' => array('desc' => '行事曆')));
+            ['janeshare'],
+            array_keys($shares)
+        );
+        $shares = self::$share->listShares('john', ['attributes' => ['desc' => '行事曆']]);
         $this->assertEquals(
-            array('myshare'),
-            array_keys($shares));
+            ['myshare'],
+            array_keys($shares)
+        );
     }
 
     public function listSystemShares()
@@ -449,41 +467,41 @@ class TestBase extends TestCase
         $permission = self::$shares['myshare']->getPermission();
         $this->assertEquals(Horde_Perms::SHOW, $permission->getDefaultPermissions());
         $this->assertFalse((bool) $permission->getGuestPermissions());
-        $this->assertEquals(array('jane' => Horde_Perms::SHOW), $permission->getUserPermissions());
-        $this->assertEquals(array('mygroup' => Horde_Perms::SHOW), $permission->getGroupPermissions());
+        $this->assertEquals(['jane' => Horde_Perms::SHOW], $permission->getUserPermissions());
+        $this->assertEquals(['mygroup' => Horde_Perms::SHOW], $permission->getGroupPermissions());
         self::$share->resetCache();
 
         $permission = self::$share->getShare('myshare')->getPermission();
         $this->assertEquals(Horde_Perms::SHOW, $permission->getDefaultPermissions());
         $this->assertFalse((bool) $permission->getGuestPermissions());
-        $this->assertEquals(array('jane' => Horde_Perms::SHOW), $permission->getUserPermissions());
-        $this->assertEquals(array('mygroup' => Horde_Perms::SHOW), $permission->getGroupPermissions());
+        $this->assertEquals(['jane' => Horde_Perms::SHOW], $permission->getUserPermissions());
+        $this->assertEquals(['mygroup' => Horde_Perms::SHOW], $permission->getGroupPermissions());
         self::$share->resetCache();
 
-        $shares = self::$share->getShares(array(self::$shares['myshare']->getId()));
+        $shares = self::$share->getShares([self::$shares['myshare']->getId()]);
         $permission = $shares['myshare']->getPermission();
         $this->assertEquals(Horde_Perms::SHOW, $permission->getDefaultPermissions());
         $this->assertFalse((bool) $permission->getGuestPermissions());
-        $this->assertEquals(array('jane' => Horde_Perms::SHOW), $permission->getUserPermissions());
-        $this->assertEquals(array('mygroup' => Horde_Perms::SHOW), $permission->getGroupPermissions());
+        $this->assertEquals(['jane' => Horde_Perms::SHOW], $permission->getUserPermissions());
+        $this->assertEquals(['mygroup' => Horde_Perms::SHOW], $permission->getGroupPermissions());
         self::$share->resetCache();
 
         $shares = self::$share->listShares('john');
         $permission = $shares['myshare']->getPermission();
         $this->assertEquals(Horde_Perms::SHOW, $permission->getDefaultPermissions());
         $this->assertFalse((bool) $permission->getGuestPermissions());
-        $this->assertEquals(array('jane' => Horde_Perms::SHOW), $permission->getUserPermissions());
-        $this->assertEquals(array('mygroup' => Horde_Perms::SHOW), $permission->getGroupPermissions());
+        $this->assertEquals(['jane' => Horde_Perms::SHOW], $permission->getUserPermissions());
+        $this->assertEquals(['mygroup' => Horde_Perms::SHOW], $permission->getGroupPermissions());
 
         $permission = self::$shares['system']['systemshare']->getPermission();
         $this->assertEquals(Horde_Perms::SHOW  | Horde_Perms::READ, $permission->getDefaultPermissions());
         $this->assertEquals(Horde_Perms::SHOW, $permission->getGuestPermissions());
 
         $permission = self::$shares['jane']['janeshare']->getPermission();
-        $this->assertEquals(array('john' => Horde_Perms::SHOW | Horde_Perms::READ | Horde_Perms::EDIT, 'peter' => Horde_Perms::SHOW), $permission->getUserPermissions());
+        $this->assertEquals(['john' => Horde_Perms::SHOW | Horde_Perms::READ | Horde_Perms::EDIT, 'peter' => Horde_Perms::SHOW], $permission->getUserPermissions());
 
         $permission = self::$shares['jane']['groupshare']->getPermission();
-        $this->assertEquals(array('mygroup' => Horde_Perms::SHOW | Horde_Perms::READ | Horde_Perms::DELETE), $permission->getGroupPermissions());
+        $this->assertEquals(['mygroup' => Horde_Perms::SHOW | Horde_Perms::READ | Horde_Perms::DELETE], $permission->getGroupPermissions());
 
         $this->switchAuth('john');
     }
@@ -503,15 +521,15 @@ class TestBase extends TestCase
 
         $this->switchAuth('john');
         // Getting shares from cache.
-        $this->assertEquals(5, count(self::$share->listShares('john', array('perm' => Horde_Perms::READ))));
-        $this->assertEquals(2, count(self::$share->listShares('john', array('perm' => Horde_Perms::EDIT))));
+        $this->assertEquals(5, count(self::$share->listShares('john', ['perm' => Horde_Perms::READ])));
+        $this->assertEquals(2, count(self::$share->listShares('john', ['perm' => Horde_Perms::EDIT])));
 
         // Reset cache.
         self::$share->resetCache();
 
         // Getting shares from backend.
-        $this->assertEquals(5, count(self::$share->listShares('john', array('perm' => Horde_Perms::READ))));
-        $this->assertEquals(2, count(self::$share->listShares('john', array('perm' => Horde_Perms::EDIT))));
+        $this->assertEquals(5, count(self::$share->listShares('john', ['perm' => Horde_Perms::READ])));
+        $this->assertEquals(2, count(self::$share->listShares('john', ['perm' => Horde_Perms::EDIT])));
 
         $janeshare->removeUser('john');
         $janeshare->save();
@@ -520,13 +538,13 @@ class TestBase extends TestCase
     protected function removeUserPermissionsJohn()
     {
         // Getting shares from cache.
-        $this->assertEquals(4, count(self::$share->listShares('john', array('perm' => Horde_Perms::READ))));
+        $this->assertEquals(4, count(self::$share->listShares('john', ['perm' => Horde_Perms::READ])));
 
         // Reset cache.
         self::$share->resetCache();
 
         // Getting shares from backend.
-        $this->assertEquals(4, count(self::$share->listShares('john', array('perm' => Horde_Perms::READ))));
+        $this->assertEquals(4, count(self::$share->listShares('john', ['perm' => Horde_Perms::READ])));
     }
 
     public function removeGroupPermissions()
@@ -548,15 +566,15 @@ class TestBase extends TestCase
     {
         $this->switchAuth('john');
         // Getting shares from cache.
-        $this->assertEquals(4, count(self::$share->listShares('john', array('perm' => Horde_Perms::READ))));
-        $this->assertEquals(2, count(self::$share->listShares('john', array('perm' => Horde_Perms::DELETE))));
+        $this->assertEquals(4, count(self::$share->listShares('john', ['perm' => Horde_Perms::READ])));
+        $this->assertEquals(2, count(self::$share->listShares('john', ['perm' => Horde_Perms::DELETE])));
 
         // Reset cache.
         self::$share->resetCache();
 
         // Getting shares from backend.
-        $this->assertEquals(4, count(self::$share->listShares('john', array('perm' => Horde_Perms::READ))));
-        $this->assertEquals(2, count(self::$share->listShares('john', array('perm' => Horde_Perms::DELETE))));
+        $this->assertEquals(4, count(self::$share->listShares('john', ['perm' => Horde_Perms::READ])));
+        $this->assertEquals(2, count(self::$share->listShares('john', ['perm' => Horde_Perms::DELETE])));
     }
 
     public function removeGroupPermissionsJaneTwo($groupshare)
@@ -569,13 +587,13 @@ class TestBase extends TestCase
     {
         $this->switchAuth('john');
         // Getting shares from cache.
-        $this->assertEquals(3, count(self::$share->listShares('john', array('perm' => Horde_Perms::READ))));
+        $this->assertEquals(3, count(self::$share->listShares('john', ['perm' => Horde_Perms::READ])));
 
         // Reset cache.
         self::$share->resetCache();
 
         // Getting shares from backend.
-        $this->assertEquals(3, count(self::$share->listShares('john', array('perm' => Horde_Perms::READ))));
+        $this->assertEquals(3, count(self::$share->listShares('john', ['perm' => Horde_Perms::READ])));
     }
 
     public function removeShare()
@@ -604,7 +622,7 @@ class TestBase extends TestCase
 
     protected function assertSortedById($expected, $shares)
     {
-        $sort = array();
+        $sort = [];
         foreach ($shares as $key => $share) {
             $sort[$share->getId()] = $key;
         }
@@ -616,8 +634,6 @@ class TestBase extends TestCase
         $this->assertEquals($expected, $keys);
     }
 
-    protected function switchAuth($user)
-    {
-    }
+    protected function switchAuth($user) {}
 
 }

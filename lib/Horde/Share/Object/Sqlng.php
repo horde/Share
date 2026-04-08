@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Extension of the Horde_Share_Object class for storing share information in
  * the Sqlng driver.
@@ -11,7 +12,7 @@ class Horde_Share_Object_Sqlng extends Horde_Share_Object_Sql
     /**
      * Serializable version.
      */
-    const VERSION = 1;
+    public const VERSION = 1;
 
     /**
      * A list of available permission.
@@ -21,7 +22,7 @@ class Horde_Share_Object_Sqlng extends Horde_Share_Object_Sql
      *
      * @param array
      */
-    public $availablePermissions = array();
+    public $availablePermissions = [];
 
     /**
      * Constructor.
@@ -46,12 +47,12 @@ class Horde_Share_Object_Sqlng extends Horde_Share_Object_Sql
 
     public function __serialize(): array
     {
-        return array(
+        return [
             self::VERSION,
             $this->data,
             $this->_shareCallback,
             $this->availablePermissions,
-        );
+        ];
     }
 
     /**
@@ -66,8 +67,8 @@ class Horde_Share_Object_Sqlng extends Horde_Share_Object_Sql
 
     public function __unserialize(array $data): void
     {
-        if (!isset($data[0]) ||
-            ($data[0] != self::VERSION)) {
+        if (!isset($data[0])
+            || ($data[0] != self::VERSION)) {
             throw new Exception('Cache version change');
         }
 
@@ -76,7 +77,7 @@ class Horde_Share_Object_Sqlng extends Horde_Share_Object_Sql
             throw new Exception('Missing callback for Horde_Share_Object unserializing');
         }
         $this->_shareCallback = $data[2];
-        $this->availablePermissions = $data[3];        
+        $this->availablePermissions = $data[3];
     }
 
     /**
@@ -88,7 +89,7 @@ class Horde_Share_Object_Sqlng extends Horde_Share_Object_Sql
         $table = $this->getShareOb()->getTable();
 
         // Build the parameter arrays for the sql statement.
-        $fields = $params = array();
+        $fields = $params = [];
         foreach ($this->getShareOb()->toDriverCharset($this->data) as $key => $value) {
             if ($key != 'share_id' && $key != 'perm' && $key != 'share_flags') {
                 $fields[] = $key;
@@ -144,11 +145,11 @@ class Horde_Share_Object_Sqlng extends Horde_Share_Object_Sql
         }
 
         // Update the share's user permissions
-        $db->delete('DELETE FROM ' . $table . '_users WHERE share_id = ?', array($this->data['share_id']));
+        $db->delete('DELETE FROM ' . $table . '_users WHERE share_id = ?', [$this->data['share_id']]);
         if (!empty($this->data['perm']['users'])) {
-            $data = array();
+            $data = [];
             foreach ($this->data['perm']['users'] as $user => $perms) {
-                $fields = $params = array();
+                $fields = $params = [];
                 foreach (Horde_Share_Sqlng::convertBitmaskToArray($perms) as $perm) {
                     $fields[] = 'perm_' . $perm;
                     $params[] = true;
@@ -163,11 +164,11 @@ class Horde_Share_Object_Sqlng extends Horde_Share_Object_Sql
         }
 
         // Update the share's group permissions
-        $db->delete('DELETE FROM ' . $table . '_groups WHERE share_id = ?', array($this->data['share_id']));
+        $db->delete('DELETE FROM ' . $table . '_groups WHERE share_id = ?', [$this->data['share_id']]);
         if (!empty($this->data['perm']['groups'])) {
-            $data = array();
+            $data = [];
             foreach ($this->data['perm']['groups'] as $group => $perms) {
-                $fields = $params = array();
+                $fields = $params = [];
                 foreach (Horde_Share_Sqlng::convertBitmaskToArray($perms) as $perm) {
                     $fields[] = 'perm_' . $perm;
                     $params[] = true;
@@ -208,7 +209,7 @@ class Horde_Share_Object_Sqlng extends Horde_Share_Object_Sql
      */
     protected function _setAvailablePermissions()
     {
-        $available = array();
+        $available = [];
         foreach ($this->availablePermissions as $perm) {
             $available[$perm] = true;
         }
@@ -217,7 +218,7 @@ class Horde_Share_Object_Sqlng extends Horde_Share_Object_Sql
                 continue;
             }
             if ($base != 'users' && $base != 'groups') {
-                $perms = array($perms);
+                $perms = [$perms];
             }
             foreach ($perms as $subperms) {
                 foreach (Horde_Share_Sqlng::convertBitmaskToArray($subperms) as $perm) {

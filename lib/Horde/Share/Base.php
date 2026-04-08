@@ -1,9 +1,10 @@
 <?php
+
 /**
  * Base class for all Horde_Share drivers.
  *
- * Copyright 2002-2017 Horde LLC (http://www.horde.org/)
- * Copyright 2002-2007 Infoteck Internet <webmaster@infoteck.qc.ca>
+ * Copyright 2002-2026 Horde LLC (http://www.horde.org/)
+ * Copyright 2002-2026 Infoteck Internet <webmaster@infoteck.qc.ca>
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -38,21 +39,21 @@ abstract class Horde_Share_Base
      *
      * @var array
      */
-    protected $_cache = array();
+    protected $_cache = [];
 
     /**
      * Id-name-map of already cached share objects.
      *
      * @var array
      */
-    protected $_shareMap = array();
+    protected $_shareMap = [];
 
     /**
      * Cache used for listShares().
      *
      * @var array
      */
-    protected $_listcache = array();
+    protected $_listcache = [];
 
     /**
      * A list of objects that we're currently sorting, for reference during the
@@ -135,9 +136,12 @@ abstract class Horde_Share_Base
      * @param Horde_Group_Base $groups  The Horde_Group driver.
      *
      */
-    public function __construct($app, $user, Horde_Perms_Base $perms,
-                                Horde_Group_Base $groups)
-    {
+    public function __construct(
+        $app,
+        $user,
+        Horde_Perms_Base $perms,
+        Horde_Group_Base $groups
+    ) {
         $this->_app = $app;
         $this->_user = $user;
         $this->_permsObject = $perms;
@@ -256,7 +260,7 @@ abstract class Horde_Share_Base
      */
     public function getShares(array $cids)
     {
-        $all_shares = $missing_ids = array();
+        $all_shares = $missing_ids = [];
         foreach ($cids as $cid) {
             if (!isset($this->_shareMap[$cid])) {
                 $missing_ids[] = $cid;
@@ -303,7 +307,7 @@ abstract class Horde_Share_Base
     {
         $shares = $this->_listAllShares();
         $this->_sortList = $shares;
-        uasort($shares, array($this, '_sortShares'));
+        uasort($shares, [$this, '_sortShares']);
         $this->_sortList = null;
 
         return $shares;
@@ -335,15 +339,17 @@ abstract class Horde_Share_Base
      *
      * @return array  The shares the user has access to.
      */
-    public function listShares($userid, array $params = array())
+    public function listShares($userid, array $params = [])
     {
-        $params = array_merge(array('perm' => Horde_Perms::SHOW,
-                                    'attributes' => null,
-                                    'from' => 0,
-                                    'count' => 0,
-                                    'sort_by' => null,
-                                    'direction' => 0),
-                              $params);
+        $params = array_merge(
+            ['perm' => Horde_Perms::SHOW,
+                'attributes' => null,
+                'from' => 0,
+                'count' => 0,
+                'sort_by' => null,
+                'direction' => 0],
+            $params
+        );
 
         $shares = $this->_listShares($userid, $params);
         if (!count($shares)) {
@@ -353,13 +359,13 @@ abstract class Horde_Share_Base
         $shares = $this->getShares($shares);
         if (is_null($params['sort_by'])) {
             $this->_sortList = $shares;
-            uasort($shares, array($this, '_sortShares'));
+            uasort($shares, [$this, '_sortShares']);
             $this->_sortList = null;
         }
 
         // Run the results through the callback, if configured.
         if (!empty($this->_callbacks['list'])) {
-            return $this->runCallback('list', array($userid, $shares, $params));
+            return $this->runCallback('list', [$userid, $shares, $params]);
         }
 
         return $shares;
@@ -373,7 +379,7 @@ abstract class Horde_Share_Base
      *
      * @return array  The shares the user has access to.
      */
-    abstract protected function _listShares($userid, array $params = array());
+    abstract protected function _listShares($userid, array $params = []);
 
     /**
      * Returns an array of all system shares.
@@ -382,7 +388,7 @@ abstract class Horde_Share_Base
      */
     public function listSystemShares()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -397,10 +403,12 @@ abstract class Horde_Share_Base
      *
      * @return integer  The number of shares
      */
-    public function countShares($userid, $perm = Horde_Perms::SHOW,
-                                $attributes = null)
-    {
-        return count($this->_listShares($userid, array('perm' => $perm, 'attributes' => $attributes)));
+    public function countShares(
+        $userid,
+        $perm = Horde_Perms::SHOW,
+        $attributes = null
+    ) {
+        return count($this->_listShares($userid, ['perm' => $perm, 'attributes' => $attributes]));
     }
 
     /**
@@ -444,7 +452,7 @@ abstract class Horde_Share_Base
     public function addShare(Horde_Share_Object $share)
     {
         // Run the results through the callback, if configured.
-        $this->runCallback('add', array($share));
+        $this->runCallback('add', [$share]);
         $this->_addShare($share);
 
         /* Store new share in the caches. */
@@ -535,7 +543,7 @@ abstract class Horde_Share_Base
     public function removeShare(Horde_Share_Object $share)
     {
         // Run the results through the callback, if configured.
-        $this->runCallback('remove', array($share));
+        $this->runCallback('remove', [$share]);
 
         /* Remove share from the caches. */
         $id = $share->getId();
@@ -699,7 +707,7 @@ abstract class Horde_Share_Base
      */
     public function resetCache()
     {
-        $this->_cache = $this->_shareMap = array();
+        $this->_cache = $this->_shareMap = [];
         $this->expireListCache();
     }
 
@@ -725,7 +733,7 @@ abstract class Horde_Share_Base
      */
     public function expireListCache()
     {
-        $this->_listcache = array();
+        $this->_listcache = [];
     }
 
     /**

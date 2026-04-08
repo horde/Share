@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Integration test for the Kolab driver based on the in-memory mock driver.
  *
@@ -10,13 +11,15 @@
  * @author     Gunnar Wrobel <wrobel@pardus.de>
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
+
 namespace Horde\Share\Kolab;
+
 use Horde\Share\TestBase as TestBase;
 
 /**
  * Integration test for the Kolab driver based on the in-memory mock driver.
  *
- * Copyright 2011-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2011-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
@@ -26,12 +29,13 @@ use Horde\Share\TestBase as TestBase;
  * @subpackage UnitTests
  * @author     Gunnar Wrobel <wrobel@pardus.de>
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
+ * @coversNothing
  */
 class MockTest extends TestBase
 {
     private static $_data;
 
-    private static $_shares = array();
+    private static $_shares = [];
 
     protected static $cache;
 
@@ -42,11 +46,11 @@ class MockTest extends TestBase
         }
 
         self::$_data = new Horde_Kolab_Storage_Driver_Mock_Data(
-            array(
-                '' => array('permissions' => array('anyone' => 'alrid')),
-                'user/john' => array('permissions' => array('anyone' => 'alrid')),
-                'user/jane' => array('permissions' => array('anyone' => 'alrid')),
-            )
+            [
+                '' => ['permissions' => ['anyone' => 'alrid']],
+                'user/john' => ['permissions' => ['anyone' => 'alrid']],
+                'user/jane' => ['permissions' => ['anyone' => 'alrid']],
+            ]
         );
         self::$cache = new Horde_Cache(new Horde_Cache_Storage_Mock());
 
@@ -55,37 +59,40 @@ class MockTest extends TestBase
         $GLOBALS['injector'] = new Horde_Injector(new Horde_Injector_TopLevel());
         $GLOBALS['injector']->setInstance('Horde_Group', $group);
 
-        foreach (array('john', 'jane', '') as $user) {
+        foreach (['john', 'jane', ''] as $user) {
             self::$_shares[$user] = new Horde_Share_Kolab(
-                'mnemo', $user, new Horde_Perms_Null(), $group
+                'mnemo',
+                $user,
+                new Horde_Perms_Null(),
+                $group
             );
             $factory = new Horde_Kolab_Storage_Factory(
-                array(
+                [
                     'driver' => 'mock',
-                    'params' => array(
+                    'params' => [
                         'data'   => self::$_data,
-                        'username' => $user
-                    ),
-                    'queries' => array(
-                        'list' => array(
-                            Horde_Kolab_Storage_List_Tools::QUERY_BASE => array(
-                                'cache' => true
-                            ),
-                            Horde_Kolab_Storage_List_Tools::QUERY_ACL => array(
-                                'cache' => true
-                            ),
-                            Horde_Kolab_Storage_List_Tools::QUERY_SHARE => array(
-                                'cache' => true
-                            ),
-                        )
-                    ),
+                        'username' => $user,
+                    ],
+                    'queries' => [
+                        'list' => [
+                            Horde_Kolab_Storage_List_Tools::QUERY_BASE => [
+                                'cache' => true,
+                            ],
+                            Horde_Kolab_Storage_List_Tools::QUERY_ACL => [
+                                'cache' => true,
+                            ],
+                            Horde_Kolab_Storage_List_Tools::QUERY_SHARE => [
+                                'cache' => true,
+                            ],
+                        ],
+                    ],
                     'cache'  => self::$cache,
-                    'logger' => new Horde_Log_Logger()
-                )
+                    'logger' => new Horde_Log_Logger(),
+                ]
             );
             $storage = $factory->create();
             $factory->getDriver()->setGroups(
-                array('john' => array('mygroup'))
+                ['john' => ['mygroup']]
             );
             self::$_shares[$user]->setStorage($storage);
         }
@@ -226,7 +233,7 @@ class MockTest extends TestBase
 
     public function testCallback()
     {
-        $this->callbackSetShareOb(new Horde_Share_Object_Sql(array()));
+        $this->callbackSetShareOb(new Horde_Share_Object_Sql([]));
     }
 
     protected function switchAuth($user)
