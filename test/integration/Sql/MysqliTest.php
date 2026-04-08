@@ -1,21 +1,14 @@
 <?php
 
-/**
- * Prepare the test setup.
- */
+declare(strict_types=1);
 
-namespace Horde\Share\Sqlng;
+namespace Horde\Share\Test\Integration\Sql;
 
-/**
- * Copyright 2010-2026 Horde LLC (http://www.horde.org/)
- *
- * @author     Jan Schneider <jan@horde.org>
- * @category   Horde
- * @package    Share
- * @subpackage UnitTests
- * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
- * @coversNothing
- */
+use Horde\Share\Test\Unnamespaced\Sql\BaseTestCase;
+use Horde_Db_Adapter_Mysqli;
+use PHPUnit\Framework\Attributes\CoversNothing;
+
+#[CoversNothing]
 class MysqliTest extends BaseTestCase
 {
     public static function setUpBeforeClass(): void
@@ -26,7 +19,7 @@ class MysqliTest extends BaseTestCase
         }
         $config = self::getConfig(
             'SHARE_SQL_MYSQLI_TEST_CONFIG',
-            __DIR__ . '/..'
+            dirname(__FILE__) . '/..'
         );
         if ($config && !empty($config['share']['sql']['mysqli'])) {
             self::$db = new Horde_Db_Adapter_Mysqli($config['share']['sql']['mysqli']);

@@ -1,21 +1,14 @@
 <?php
 
-/**
- * Prepare the test setup.
- */
+declare(strict_types=1);
 
-namespace Horde\Share\Sqlng;
+namespace Horde\Share\Test\Integration\Sql;
 
-/**
- * Copyright 2010-2026 Horde LLC (http://www.horde.org/)
- *
- * @author     Jan Schneider <jan@horde.org>
- * @category   Horde
- * @package    Share
- * @subpackage UnitTests
- * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
- * @coversNothing
- */
+use Horde\Share\Test\Unnamespaced\Sql\BaseTestCase;
+use Horde_Db_Adapter_Oci8;
+use PHPUnit\Framework\Attributes\CoversNothing;
+
+#[CoversNothing]
 class Oci8Test extends BaseTestCase
 {
     public static function setUpBeforeClass(): void
@@ -26,7 +19,7 @@ class Oci8Test extends BaseTestCase
         }
         $config = self::getConfig(
             'SHARE_SQL_OCI8_TEST_CONFIG',
-            __DIR__ . '/..'
+            dirname(__FILE__) . '/..'
         );
         if ($config && !empty($config['share']['sql']['oci8'])) {
             self::$db = new Horde_Db_Adapter_Oci8($config['share']['sql']['oci8']);

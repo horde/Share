@@ -1,39 +1,35 @@
 <?php
 
-/**
- * Unit testing for the Kolab driver.
- *
- * PHP version 5
- *
- * @category   Horde
- * @package    Share
- * @subpackage UnitTests
- * @author     Gunnar Wrobel <wrobel@pardus.de>
- * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
- */
+declare(strict_types=1);
 
-namespace Horde\Share;
+namespace Horde\Share\Test\Integration\Kolab;
 
-use Kolab;
+use Horde_Cache;
+use Horde_Cache_Storage_Mock;
+use Horde_Exception_NotFound;
+use Horde_Group_Mock;
+use Horde_Kolab_Storage;
+use Horde_Kolab_Storage_Factory;
+use Horde_Kolab_Storage_Folder_Namespace;
+use Horde_Kolab_Storage_List;
+use Horde_Kolab_Storage_List_Query_List;
+use Horde_Kolab_Storage_List_Tools;
+use Horde_Log_Logger;
+use Horde_Perms;
+use Horde_Perms_Null;
+use Horde_Share_Exception;
+use Horde_Share_Kolab;
+use Horde_Share_Object_Kolab;
+use Horde_Share_Stub_Group;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Unit testing for the Kolab driver.
- *
- * Copyright 2011-2026 Horde LLC (http://www.horde.org/)
- *
- * See the enclosed file LICENSE for license information (LGPL). If you
- * did not receive this file, see http://www.horde.org/licenses/lgpl21.
- *
- * @category   Horde
- * @package    Share
- * @subpackage UnitTests
- * @author     Gunnar Wrobel <wrobel@pardus.de>
- * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
- * @coversNothing
- */
+#[CoversNothing]
 class UnitTest extends TestCase
 {
+    private $storage;
+    private $list;
+
     public function setUp(): void
     {
         if (!interface_exists('Horde_Kolab_Storage')) {
@@ -43,29 +39,26 @@ class UnitTest extends TestCase
 
     public function testGetStorage()
     {
-        $storage = $this->getMock('Horde_Kolab_Storage');
-        $list = $this->getMock('Horde_Kolab_Storage_List');
+        $storage = $this->createMock(Horde_Kolab_Storage::class);
+        $list = $this->createMock(Horde_Kolab_Storage_List::class);
         $storage->expects($this->once())
             ->method('getList')
-            ->will($this->returnValue($list));
+            ->willReturn($list);
         $driver = $this->_getDriver();
         $driver->setStorage($storage);
         $this->assertSame($list, $driver->getList());
     }
 
-    /**
-     * @expectedException Horde_Share_Exception
-     */
     public function testStorageMissing()
     {
+        $this->expectException(Horde_Share_Exception::class);
         $driver = $this->_getDriver();
         $driver->getStorage();
     }
 
     public function testListArray()
     {
-        $this->assertInternalType(
-            'array',
+        $this->assertIsArray(
             $this->_getCompleteDriver()->listShares('john')
         );
     }
@@ -78,7 +71,7 @@ class UnitTest extends TestCase
             new Horde_Perms_Null(),
             new Horde_Share_Stub_Group()
         );
-        $this->assertInternalType('string', $driver->getType());
+        $this->assertIsString($driver->getType());
     }
 
     public function testMnemoSupport()
@@ -125,11 +118,9 @@ class UnitTest extends TestCase
         $this->assertEquals('task', $driver->getType());
     }
 
-    /**
-     * @expectedException Horde_Share_Exception
-     */
     public function testSupportException()
     {
+        $this->expectException(Horde_Share_Exception::class);
         $driver = new Horde_Share_Kolab(
             'NOTSUPPORTED',
             'john',
@@ -148,20 +139,16 @@ class UnitTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException Horde_Share_Exception
-     */
     public function testUndefinedId()
     {
+        $this->expectException(Horde_Share_Exception::class);
         $object = new Horde_Share_Object_Kolab(null, new Horde_Group_Mock());
         $object->getId();
     }
 
-    /**
-     * @expectedException Horde_Share_Exception
-     */
     public function testUndefinedName()
     {
+        $this->expectException(Horde_Share_Exception::class);
         $object = new Horde_Share_Object_Kolab(null, new Horde_Group_Mock());
         $object->getName();
     }
@@ -169,8 +156,7 @@ class UnitTest extends TestCase
     public function testUndefinedPermissionId()
     {
         $object = new Horde_Share_Object_Kolab(null, new Horde_Group_Mock());
-        $this->assertInternalType(
-            'string',
+        $this->assertIsString(
             $object->getPermissionId()
         );
     }
@@ -254,11 +240,9 @@ class UnitTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException Horde_Exception_NotFound
-     */
     public function testMissingShare()
     {
+        $this->expectException(Horde_Exception_NotFound::class);
         $this->_getPrefilledDriver()->getShareById('DOES_NOT_EXIST');
     }
 
@@ -505,11 +489,9 @@ class UnitTest extends TestCase
         $this->assertEquals('INBOX/test', $share->constructFolderName('john', 'test'));
     }
 
-    /**
-     * @expectedException Horde_Share_Exception
-     */
     public function testConstructFolderNameInComplexNamespace()
     {
+        $this->expectException(Horde_Share_Exception::class);
         $share = $this->_getComplexNamespaceDriver();
         $this->assertEquals('INBOX/test', $share->constructFolderName('john', 'test'));
     }
@@ -532,8 +514,7 @@ class UnitTest extends TestCase
             ->getShareById($this->_getId('john', 'Calendar'));
         $share->set('desc', 'NEW');
         $share->save();
-        $query
-        = $this->assertEquals(
+        $this->assertEquals(
             'NEW',
             $this->list
             ->getQuery(Horde_Kolab_Storage_List_Tools::QUERY_SHARE)
@@ -556,18 +537,20 @@ class UnitTest extends TestCase
 
     public function testListShareCache()
     {
-        $storage = $this->getMock('Horde_Kolab_Storage');
-        $list = $this->getMock('Horde_Kolab_Storage_List_Tools', [], [], '', false, false);
-        $query = $this->getMock('Horde_Kolab_Storage_List_Query_List');
+        $storage = $this->createMock(Horde_Kolab_Storage::class);
+        $list = $this->getMockBuilder(Horde_Kolab_Storage_List_Tools::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $query = $this->createMock(Horde_Kolab_Storage_List_Query_List::class);
         $query->expects($this->once())
             ->method('listByType')
-            ->will($this->returnValue([]));
+            ->willReturn([]);
         $list->expects($this->exactly(3))
             ->method('getQuery')
-            ->will($this->returnValue($query));
+            ->willReturn($query);
         $storage->expects($this->exactly(3))
             ->method('getList')
-            ->will($this->returnValue($list));
+            ->willReturn($list);
         $driver = $this->_getDriver();
         $driver->setStorage($storage);
         $driver->listShares('test');

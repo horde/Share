@@ -1,24 +1,15 @@
 <?php
 
-/**
- * Prepare the test setup.
- */
+declare(strict_types=1);
 
-namespace Horde\Share\Sqlng\Pdo;
+namespace Horde\Share\Test\Integration\Sqlng\Pdo;
 
-use Horde\Share\Sqlng\BaseTestCase;
+use Horde\Share\Test\Unnamespaced\Sqlng\BaseTestCase;
+use Horde_Db_Adapter_Pdo_Mysql;
 use PDO;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * Copyright 2010-2026 Horde LLC (http://www.horde.org/)
- *
- * @author     Jan Schneider <jan@horde.org>
- * @category   Horde
- * @package    Share
- * @subpackage UnitTests
- * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
- * @coversNothing
- */
+#[CoversNothing]
 class MysqlTest extends BaseTestCase
 {
     public static function setUpBeforeClass(): void
@@ -30,7 +21,7 @@ class MysqlTest extends BaseTestCase
         }
         $config = self::getConfig(
             'SHARE_SQL_PDO_MYSQL_TEST_CONFIG',
-            __DIR__ . '/../..'
+            dirname(__FILE__) . '/../..'
         );
         if ($config && !empty($config['share']['sql']['pdo_mysql'])) {
             self::$db = new Horde_Db_Adapter_Pdo_Mysql($config['share']['sql']['pdo_mysql']);

@@ -1,36 +1,26 @@
 <?php
 
-/**
- * Integration test for the Kolab driver based on the in-memory mock driver.
- *
- * PHP version 5
- *
- * @category   Horde
- * @package    Share
- * @subpackage UnitTests
- * @author     Gunnar Wrobel <wrobel@pardus.de>
- * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
- */
+declare(strict_types=1);
 
-namespace Horde\Share\Kolab;
+namespace Horde\Share\Test\Integration\Kolab;
 
-use Horde\Share\TestBase as TestBase;
+use Horde\Share\Test\Unnamespaced\TestBase;
+use Horde_Cache;
+use Horde_Cache_Storage_Mock;
+use Horde_Injector;
+use Horde_Injector_TopLevel;
+use Horde_Kolab_Storage_Driver_Mock_Data;
+use Horde_Kolab_Storage_Factory;
+use Horde_Kolab_Storage_List_Tools;
+use Horde_Log_Logger;
+use Horde_Perms_Null;
+use Horde_Share_Kolab;
+use Horde_Share_Object_Sql;
+use Horde_Share_Stub_Group;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\Depends;
 
-/**
- * Integration test for the Kolab driver based on the in-memory mock driver.
- *
- * Copyright 2011-2026 Horde LLC (http://www.horde.org/)
- *
- * See the enclosed file LICENSE for license information (LGPL). If you
- * did not receive this file, see http://www.horde.org/licenses/lgpl21.
- *
- * @category   Horde
- * @package    Share
- * @subpackage UnitTests
- * @author     Gunnar Wrobel <wrobel@pardus.de>
- * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
- * @coversNothing
- */
+#[CoversNothing]
 class MockTest extends TestBase
 {
     private static $_data;
@@ -55,7 +45,6 @@ class MockTest extends TestBase
         self::$cache = new Horde_Cache(new Horde_Cache_Storage_Mock());
 
         $group = new Horde_Share_Stub_Group();
-        // FIXME
         $GLOBALS['injector'] = new Horde_Injector(new Horde_Injector_TopLevel());
         $GLOBALS['injector']->setInstance('Horde_Group', $group);
 
@@ -118,114 +107,86 @@ class MockTest extends TestBase
         $this->assertInstanceOf('Horde_Share_Object_Kolab', $share);
     }
 
-    /**
-     * @depends testAddShare
-     */
+    #[Depends('testAddShare')]
     public function testPermissions()
     {
         $this->permissions();
     }
 
-    /**
-     * @depends testAddShare
-     */
+    #[Depends('testAddShare')]
     public function testExists()
     {
         $this->exists();
     }
 
-    /**
-     * @depends testPermissions
-     */
+    #[Depends('testPermissions')]
     public function testCountShares()
     {
         $this->countShares();
     }
 
-    /**
-     * @depends testPermissions
-     */
+    #[Depends('testPermissions')]
     public function testGetShare()
     {
         $share = $this->getShare();
         $this->assertInstanceOf('Horde_Share_Object_Kolab', $share);
     }
 
-    /**
-     * @depends testAddShare
-     */
+    #[Depends('testAddShare')]
     public function testHierarchy()
     {
         $this->hierarchy();
     }
 
-    /**
-     * @depends testGetShare
-     */
+    #[Depends('testGetShare')]
     public function testGetShareById()
     {
         $this->getShareById();
     }
 
-    /**
-     * @depends testGetShare
-     */
+    #[Depends('testGetShare')]
     public function testGetShares()
     {
         $this->getShares();
     }
 
-    /**
-     * @depends testPermissions
-     */
+    #[Depends('testPermissions')]
     public function testListAllShares()
     {
         $this->listAllShares();
     }
 
-    /**
-     * @depends testPermissions
-     */
+    #[Depends('testPermissions')]
     public function testListShares()
     {
         $this->listShares();
     }
 
-    /**
-     * @depends testPermissions
-     */
+    #[Depends('testPermissions')]
     public function testListSystemShares()
     {
         $this->listSystemShares();
     }
 
-    /**
-     * @depends testPermissions
-     */
+    #[Depends('testPermissions')]
     public function testGetPermission()
     {
         return $this->getPermission();
     }
 
-    /**
-     * @depends testPermissions
-     */
+    #[Depends('testPermissions')]
     public function testRemoveUserPermissions()
     {
         $this->removeUserPermissions();
     }
 
-    /**
-     * @depends testRemoveUserPermissions
-     */
+    #[Depends('testRemoveUserPermissions')]
     public function testRemoveGroupPermissions()
     {
         $this->removeGroupPermissions();
     }
 
-    /**
-     * @depends testGetShare
-     */
+    #[Depends('testGetShare')]
     public function testRemoveShare()
     {
         $this->removeShare();
@@ -247,10 +208,3 @@ class MockTest extends TestBase
         return self::$cache;
     }
 }
-
-/**
- NOTES
-
- - Check extra API calls in SQL driver
- - add server test
-*/

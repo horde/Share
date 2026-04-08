@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright 2010-2026 Horde LLC (http://www.horde.org/)
  *
@@ -10,19 +12,20 @@
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
 
-namespace Horde\Share\Sqlng;
+namespace Horde\Share\Test\Unnamespaced\Sqlng;
 
-use Horde\Share\TestBase as TestBase;
-use Horde_Share_Stub_Group;
-use Horde_Share_Sqlng;
-use Horde_Perms_Sql;
-use Horde_Injector;
-use Horde_Share_Object_Sqlng;
+use Horde\Share\Test\Unnamespaced\TestBase;
 use Horde_Db_Migration_Base;
+use Horde_Injector;
+use Horde_Injector_TopLevel;
+use Horde_Perms_Sql;
+use Horde_Share_Object_Sqlng;
+use Horde_Share_Sqlng;
+use Horde_Share_Stub_Group;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\Depends;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class BaseTestCase extends TestBase
 {
     protected static $db;
@@ -54,57 +57,43 @@ class BaseTestCase extends TestBase
         $this->assertInstanceOf('Horde_Share_Object_Sqlng', $share);
     }
 
-    /**
-     * @depends testAddShare
-     */
+    #[Depends('testAddShare')]
     public function testPermissions()
     {
         parent::permissions();
     }
 
-    /**
-     * @depends testAddShare
-     */
+    #[Depends('testAddShare')]
     public function testExists()
     {
         parent::exists();
     }
 
-    /**
-     * @depends testPermissions
-     */
+    #[Depends('testPermissions')]
     public function testCountShares()
     {
         parent::countShares();
     }
 
-    /**
-     * @depends testPermissions
-     */
+    #[Depends('testPermissions')]
     public function testGetShare()
     {
         $share = parent::getShare();
         $this->assertInstanceOf('Horde_Share_Object_Sqlng', $share);
     }
 
-    /**
-     * @depends testGetShare
-     */
+    #[Depends('testGetShare')]
     public function testGetShareById()
     {
         parent::getShareById();
     }
 
-    /**
-     * @depends testGetShare
-     */
+    #[Depends('testGetShare')]
     public function testGetShares()
     {
         parent::getShares();
     }
 
-    /**
-     */
     public function testGetParent()
     {
         $share = self::$share->getShare('myshare');
@@ -112,9 +101,7 @@ class BaseTestCase extends TestBase
         $this->assertEquals($share->getId(), $child->getParent()->getId());
     }
 
-    /**
-     * @depends testPermissions
-     */
+    #[Depends('testPermissions')]
     public function testListOwners()
     {
         $owners = self::$share->listOwners();
@@ -122,74 +109,56 @@ class BaseTestCase extends TestBase
         $this->assertTrue(in_array('john', $owners));
     }
 
-    /**
-     * @depends testPermissions
-     */
+    #[Depends('testPermissions')]
     public function testCountOwners()
     {
         $count = self::$share->countOwners();
         $this->assertTrue($count > 0);
     }
 
-    /**
-     * @depends testPermissions
-     */
+    #[Depends('testPermissions')]
     public function testListAllShares()
     {
         parent::listAllShares();
     }
 
-    /**
-     * @depends testPermissions
-     */
+    #[Depends('testPermissions')]
     public function testListShares()
     {
         parent::listShares();
     }
 
-    /**
-     * @depends testPermissions
-     */
+    #[Depends('testPermissions')]
     public function testListSystemShares()
     {
         parent::listSystemShares();
     }
 
-    /**
-     * @depends testPermissions
-     */
+    #[Depends('testPermissions')]
     public function testGetPermission()
     {
         return $this->getPermission();
     }
 
-    /**
-     * @depends testPermissions
-     */
+    #[Depends('testPermissions')]
     public function testRemoveUserPermissions()
     {
         return parent::removeUserPermissions();
     }
 
-    /**
-     * @depends testRemoveUserPermissions
-     */
+    #[Depends('testRemoveUserPermissions')]
     public function testRemoveGroupPermissions()
     {
         parent::removeGroupPermissions();
     }
 
-    /**
-     * @depends testGetShare
-     */
+    #[Depends('testGetShare')]
     public function testRemoveShare()
     {
         parent::removeShare();
     }
 
-    /**
-     * @depends testGetShare
-     */
+    #[Depends('testGetShare')]
     public function testRenameShare()
     {
         parent::renameShare();
@@ -202,16 +171,16 @@ class BaseTestCase extends TestBase
 
     public static function setUpBeforeClass(): void
     {
-        require_once __DIR__ . '/../migration/sqlng.php';
+        require_once __DIR__ . '/../../migration/sqlng.php';
         migrate_sqlng(self::$db);
 
         $group = new Horde_Share_Stub_Group();
         self::$share = new Horde_Share_Sqlng('test', 'john', new Horde_Perms_Sql(['db' => self::$db]), $group);
         self::$share->setStorage(self::$db);
 
-        // FIXME
-        //$GLOBALS['injector'] = new Horde_Injector(new Horde_Injector_TopLevel());
-        //$GLOBALS['injector']->setInstance('Horde_Group', $group);
+        // FIXME: Horde_Perms_Base::hasPermission() uses $GLOBALS['injector'] to look up Horde_Group
+        $GLOBALS['injector'] = new Horde_Injector(new Horde_Injector_TopLevel());
+        $GLOBALS['injector']->setInstance('Horde_Group', $group);
     }
 
     public static function tearDownAfterClass(): void

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright 2010-2026 Horde LLC (http://www.horde.org/)
  *
@@ -10,11 +12,12 @@
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  */
 
-namespace Horde\Share;
+namespace Horde\Share\Test\Unnamespaced;
 
-use Horde_Test_Case as TestCase;
+use Horde_Exception_NotFound;
 use Horde_Perms;
 use Horde_Support_Stub;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @coversNothing
@@ -24,6 +27,29 @@ class TestBase extends TestCase
     protected static $share;
 
     protected static $shares = [];
+
+    /**
+     * Standalone getConfig() replacing Horde_Test_Case::getConfig().
+     */
+    public static function getConfig(string $env, ?string $path = null): ?array
+    {
+        $config = getenv($env);
+        if ($config) {
+            $json = json_decode($config, true);
+            if ($json) {
+                return $json;
+            }
+        }
+        if ($path) {
+            $configFile = $path . '/conf.php';
+            if (file_exists($configFile)) {
+                $conf = [];
+                require $configFile;
+                return $conf;
+            }
+        }
+        return null;
+    }
 
     public function getApp($app)
     {
@@ -599,11 +625,8 @@ class TestBase extends TestCase
     public function removeShare()
     {
         self::$share->removeShare(self::$shares['myshare']);
-        try {
-            self::$share->getShareById(self::$shares['myshare']->getId());
-            $this->fail('Share "myshare" should be removed by now.');
-        } catch (Horde_Exception_NotFound $e) {
-        }
+        $this->expectException(Horde_Exception_NotFound::class);
+        self::$share->getShareById(self::$shares['myshare']->getId());
     }
 
     public function renameShare()
@@ -635,5 +658,4 @@ class TestBase extends TestCase
     }
 
     protected function switchAuth($user) {}
-
 }
