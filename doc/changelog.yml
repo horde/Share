@@ -1,57 +1,14 @@
 ---
-3.0.0alpha5:
-  api: 3.0.0alpha1
-  state:
-    release: alpha
-    api: alpha
-  date: 2022-10-08
-  license:
-    identifier: LGPL-2.1
-    uri: http://www.horde.org/licenses/lgpl21
-  notes: |+
-3.0.0alpha4:
-  api: 3.0.0alpha1
-  state:
-    release: alpha
-    api: alpha
-  date: 2022-10-08
-  license:
-    identifier: LGPL-2.1
-    uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [rla] Improved PHP 8.1 compatibility.
-    |+
-3.0.0alpha3:
-  api: 3.0.0alpha1
-  state:
-    release: alpha
-    api: alpha
-  date: 2021-03-13
-  license:
-    identifier: LGPL-2.1
-    uri: http://www.horde.org/licenses/lgpl21
-  notes: |+
-3.0.0alpha2:
-  api: 3.0.0alpha1
-  state:
-    release: alpha
-    api: alpha
-  date: 2021-02-24
-  license:
-    identifier: LGPL-2.1
-    uri: http://www.horde.org/licenses/lgpl21
-  notes: |+
-3.0.0alpha1:
-  api: 3.0.0alpha1
+3.0.0:
+  api: 3.0.0
   state:
     release: stable
     api: stable
-  date: 2021-02-24
+  date: 2026-06-27
   license:
-    identifier: LGPL-2.1
-    uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] Add Horde_Share_Object#toHash().
+    identifier: LGPL-2.1-only
+    uri: https://spdx.org/licenses/LGPL-2.1-only.html
+  notes: "chore: refresh qc fixes and platform deps\nchore: Update workflow dependency"
 3.0.0-beta1:
   api: 3.0.0-beta1
   state:
@@ -61,23 +18,57 @@
   license:
     identifier: LGPL-2.1-only
     uri: https://spdx.org/licenses/LGPL-2.1-only.html
-  notes: |-
-    test: Upgrade unit tests for PHPUnit 11+
-    fix: Always provide a numeric code with NotFound exceptions
-    style: run horde-components qc --fix
-    feat(kolab)!: Remove Kolab driver
-    chore(hordeyml): Remove kolab related dependencies
-    Development mode for Share-3.0.0alpha5
-    Released Share-3.0.0alpha4
-    PHP 8.1: Add modern __serialize methods to share Object implementation.
-    Hotfix for PHP8 with DB configured to DB-native UTF-8 variants
-    Update metadata and workflows for PHP 8 support
-    Add CI job for satis repo update
-    Update bootstrap.php
-    no errors left, added ci. and phpdoc.yml
-    two risky tests left (no assertions)
-    WIP
-    Development mode for Share-3.0.0alpha5
+  notes: "test: Upgrade unit tests for PHPUnit 11+\nfix: Always provide a numeric code with NotFound exceptions\nstyle: run horde-components qc --fix\nfeat(kolab)!: Remove Kolab driver\nchore(hordeyml): Remove kolab related dependencies\nDevelopment mode for Share-3.0.0alpha5\nReleased Share-3.0.0alpha4\nPHP 8.1: Add modern __serialize methods to share Object implementation.\nHotfix for PHP8 with DB configured to DB-native UTF-8 variants\nUpdate metadata and workflows for PHP 8 support\nAdd CI job for satis repo update\nUpdate bootstrap.php\nno errors left, added ci. and phpdoc.yml\ntwo risky tests left (no assertions)\nWIP\nDevelopment mode for Share-3.0.0alpha5"
+3.0.0alpha5:
+  api: 3.0.0alpha1
+  state:
+    release: alpha
+    api: alpha
+  date: 2022-10-08
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: ''
+3.0.0alpha4:
+  api: 3.0.0alpha1
+  state:
+    release: alpha
+    api: alpha
+  date: 2022-10-08
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: "[rla] Improved PHP 8.1 compatibility.\n|+\n"
+3.0.0alpha3:
+  api: 3.0.0alpha1
+  state:
+    release: alpha
+    api: alpha
+  date: 2021-03-13
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: ''
+3.0.0alpha2:
+  api: 3.0.0alpha1
+  state:
+    release: alpha
+    api: alpha
+  date: 2021-02-24
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: ''
+3.0.0alpha1:
+  api: 3.0.0alpha1
+  state:
+    release: stable
+    api: stable
+  date: 2021-02-24
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: "[jan] Add Horde_Share_Object#toHash().\n"
 2.1.2:
   api: 1.4.0
   state:
@@ -87,8 +78,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] Fix removing custom permssions when removing a user or group from a share (Bug #14578).
+  notes: "[jan] Fix removing custom permssions when removing a user or group from a share (Bug #14578).\n"
 2.1.1:
   api: 1.4.0
   state:
@@ -98,8 +88,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] Use more efficient database access in SQL backends.
+  notes: "[jan] Use more efficient database access in SQL backends.\n"
 2.1.0:
   api: 1.4.0
   state:
@@ -109,8 +98,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [mjr] Fix handling of text/clob fields (Bug #14357).
+  notes: "[mjr] Fix handling of text/clob fields (Bug #14357).\n"
 2.0.10:
   api: 1.3.0
   state:
@@ -120,8 +108,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] Update Greek translation (Limperis Antonis <limperis@cti.gr>).
+  notes: "[jan] Update Greek translation (Limperis Antonis <limperis@cti.gr>).\n"
 2.0.9:
   api: 1.3.0
   state:
@@ -131,8 +118,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] Protect against certain share tables corruption (Bug #14259).
+  notes: "[jan] Protect against certain share tables corruption (Bug #14259).\n"
 2.0.8:
   api: 1.3.0
   state:
@@ -142,8 +128,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] Mark PHP 7 as supported.
+  notes: "[jan] Mark PHP 7 as supported.\n"
 2.0.7:
   api: 1.3.0
   state:
@@ -153,8 +138,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] Fix returning user and group permissions for system shares using the SQLNG driver.
+  notes: "[jan] Fix returning user and group permissions for system shares using the SQLNG driver.\n"
 2.0.6:
   api: 1.3.0
   state:
@@ -164,9 +148,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] Support loading translations from Composer-installed package.
-    [jan] Improve PSR-2 compatibility.
+  notes: "[jan] Support loading translations from Composer-installed package.\n[jan] Improve PSR-2 compatibility.\n"
 2.0.5:
   api: 1.3.0
   state:
@@ -176,8 +158,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] Make SQL backend compatible with Oracle.
+  notes: "[jan] Make SQL backend compatible with Oracle.\n"
 2.0.4:
   api: 1.3.0
   state:
@@ -187,8 +168,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [mjr] Fix setting permissions while saving shares when using the sqlng driver (Bug #12413).
+  notes: "[mjr] Fix setting permissions while saving shares when using the sqlng driver (Bug #12413).\n"
 2.0.3:
   api: 1.3.0
   state:
@@ -198,8 +178,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] Fix testing for owner and user permissions in Kolab shares.
+  notes: "[jan] Fix testing for owner and user permissions in Kolab shares.\n"
 2.0.2:
   api: 1.3.0
   state:
@@ -209,8 +188,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] Update Basque translation (Ibon Igartua <ibon.igartua@ehu.es>).
+  notes: "[jan] Update Basque translation (Ibon Igartua <ibon.igartua@ehu.es>).\n"
 2.0.1:
   api: 1.3.0
   state:
@@ -220,75 +198,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] Update Dutch translation (Arjen de Korte <build+horde@de-korte.org>).
-2.0.0beta4:
-  api: 1.3.0
-  state:
-    release: beta
-    api: stable
-  date: 2012-10-12
-  license:
-    identifier: LGPL-2.1
-    uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [gwr] Propagate setting the default attribute to the Kolab backend.
-2.0.0beta3:
-  api: 1.3.0
-  state:
-    release: beta
-    api: stable
-  date: 2012-08-29
-  license:
-    identifier: LGPL-2.1
-    uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [gwr] Adapt to API changes in Kolab_Storage.
-2.0.0beta2:
-  api: 1.3.0
-  state:
-    release: beta
-    api: stable
-  date: 2012-07-21
-  license:
-    identifier: LGPL-2.1
-    uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] Remove optional dependency on Horde_DataTree.
-2.0.0beta1:
-  api: 1.3.0
-  state:
-    release: beta
-    api: stable
-  date: 2012-07-19
-  license:
-    identifier: LGPL-2.1
-    uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    First beta release for Horde 5.
-    [jan] Remove DataTree driver.
-2.0.0alpha1:
-  api: 1.3.0
-  state:
-    release: alpha
-    api: stable
-  date: 2012-07-06
-  license:
-    identifier: LGPL-2.1
-    uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    First alpha release for Horde 5.
-2.0.0RC1:
-  api: 1.3.0
-  state:
-    release: beta
-    api: stable
-  date: 2012-10-26
-  license:
-    identifier: LGPL-2.1
-    uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] Fix sorting of Kolab shares (Bug #11509).
+  notes: "[jan] Update Dutch translation (Arjen de Korte <build+horde@de-korte.org>).\n"
 2.0.0:
   api: 1.3.0
   state:
@@ -298,8 +208,67 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    First stable release for Horde 5.
+  notes: "First stable release for Horde 5.\n"
+2.0.0RC1:
+  api: 1.3.0
+  state:
+    release: beta
+    api: stable
+  date: 2012-10-26
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: "[jan] Fix sorting of Kolab shares (Bug #11509).\n"
+2.0.0beta4:
+  api: 1.3.0
+  state:
+    release: beta
+    api: stable
+  date: 2012-10-12
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: "[gwr] Propagate setting the default attribute to the Kolab backend.\n"
+2.0.0beta3:
+  api: 1.3.0
+  state:
+    release: beta
+    api: stable
+  date: 2012-08-29
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: "[gwr] Adapt to API changes in Kolab_Storage.\n"
+2.0.0beta2:
+  api: 1.3.0
+  state:
+    release: beta
+    api: stable
+  date: 2012-07-21
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: "[jan] Remove optional dependency on Horde_DataTree.\n"
+2.0.0beta1:
+  api: 1.3.0
+  state:
+    release: beta
+    api: stable
+  date: 2012-07-19
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: "First beta release for Horde 5.\n[jan] Remove DataTree driver.\n"
+2.0.0alpha1:
+  api: 1.3.0
+  state:
+    release: alpha
+    api: stable
+  date: 2012-07-06
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: "First alpha release for Horde 5.\n"
 1.3.0:
   api: 1.3.0
   state:
@@ -309,9 +278,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] Add renameShare().
-    [mjr] Properly cache empty listShares results (Bug #11045).
+  notes: "[jan] Add renameShare().\n[mjr] Properly cache empty listShares results (Bug #11045).\n"
 1.2.2:
   api: 1.2.0
   state:
@@ -321,8 +288,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] Skip Kolab test if Horde_Kolab_Storage is not installed.
+  notes: "[jan] Skip Kolab test if Horde_Kolab_Storage is not installed.\n"
 1.2.1:
   api: 1.2.0
   state:
@@ -332,8 +298,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [gwr] Fix usage of Horde_Exception_Wrapped.
+  notes: "[gwr] Fix usage of Horde_Exception_Wrapped.\n"
 1.2.0:
   api: 1.2.0
   state:
@@ -343,9 +308,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [gwr] Fixed support for share parents in the Kolab driver.
-    [gwr] Fixed support for multiple namespaces of the same type in the Kolab driver.
+  notes: "[gwr] Fixed support for share parents in the Kolab driver.\n[gwr] Fixed support for multiple namespaces of the same type in the Kolab driver.\n"
 1.1.2:
   api: 1.1.0
   state:
@@ -355,8 +318,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] Update Latvian translation.
+  notes: "[jan] Update Latvian translation.\n"
 1.1.1:
   api: 1.1.0
   state:
@@ -366,8 +328,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [mjr] Fix returning shares in the proper order when fetching multiple shares by id.
+  notes: "[mjr] Fix returning shares in the proper order when fetching multiple shares by id.\n"
 1.1.0:
   api: 1.1.0
   state:
@@ -377,10 +338,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [mjr] Fix usage of countOwners() and listOwners() in the Sqlng driver.
-    [mjr] Add ability to immediately save a single attribute change.
-    [jan] Updated Spanish translation.
+  notes: "[mjr] Fix usage of countOwners() and listOwners() in the Sqlng driver.\n[mjr] Add ability to immediately save a single attribute change.\n[jan] Updated Spanish translation.\n"
 1.0.1:
   api: 1.0.0
   state:
@@ -390,54 +348,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] SECURITY: Fix permission checks of guest users on system shares.
-1.0.0beta1:
-  api: 1.0.0
-  state:
-    release: beta
-    api: beta
-  date: 2011-03-16
-  license:
-    identifier: LGPL-2.1
-    uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    First beta release for Horde 4.
-1.0.0alpha1:
-  api: 1.0.0
-  state:
-    release: alpha
-    api: alpha
-  date: 2011-03-08
-  license:
-    identifier: LGPL-2.1
-    uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    First alpha release for Horde 4.
-1.0.0RC2:
-  api: 1.0.0
-  state:
-    release: beta
-    api: beta
-  date: 2011-03-29
-  license:
-    identifier: LGPL-2.1
-    uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    Second release candidate for Horde 4.
-1.0.0RC1:
-  api: 1.0.0
-  state:
-    release: beta
-    api: beta
-  date: 2011-03-22
-  license:
-    identifier: LGPL-2.1
-    uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    First release candidate for Horde 4.
-    [gwr] Fix checking creators permission for Kolab shares.
-    [gwr] URL encode share ids in the Kolab driver.
+  notes: "[jan] SECURITY: Fix permission checks of guest users on system shares.\n"
 1.0.0:
   api: 1.0.0
   state:
@@ -447,8 +358,47 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    First stable release for Horde 4.
+  notes: "First stable release for Horde 4.\n"
+1.0.0RC2:
+  api: 1.0.0
+  state:
+    release: beta
+    api: beta
+  date: 2011-03-29
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: "Second release candidate for Horde 4.\n"
+1.0.0RC1:
+  api: 1.0.0
+  state:
+    release: beta
+    api: beta
+  date: 2011-03-22
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: "First release candidate for Horde 4.\n[gwr] Fix checking creators permission for Kolab shares.\n[gwr] URL encode share ids in the Kolab driver.\n"
+1.0.0beta1:
+  api: 1.0.0
+  state:
+    release: beta
+    api: beta
+  date: 2011-03-16
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: "First beta release for Horde 4.\n"
+1.0.0alpha1:
+  api: 1.0.0
+  state:
+    release: alpha
+    api: alpha
+  date: 2011-03-08
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: "First alpha release for Horde 4.\n"
 0.0.3:
   api: 0.0.3
   state:
@@ -458,13 +408,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    Converted to package.xml 2.0 for pear.horde.org.
-    Split into a driver pattern.
-    Simplified the API greatly, removing unused functions.
-    Add a method for counting the number of shares at a certain access level.
-    Add native SQL driver (duck@obala.net, Request #6109).
-    Implemented extended free/busy access concept in the Kolab driver.
+  notes: "Converted to package.xml 2.0 for pear.horde.org.\nSplit into a driver pattern.\nSimplified the API greatly, removing unused functions.\nAdd a method for counting the number of shares at a certain access level.\nAdd native SQL driver (duck@obala.net, Request #6109).\nImplemented extended free/busy access concept in the Kolab driver.\n"
 0.0.2:
   api: 0.0.2
   state:
@@ -474,9 +418,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    Added countShares().
-    listShares() and countShares() now treat the $owner argument as an optional username restricting the returned shares, not a modifier to the initial $userid. Now $userid is the user who must have permission to see the shares that are returned or counted, and $owner, if non-null, limits the shares returned to those owned by $owner.
+  notes: "Added countShares().\nlistShares() and countShares() now treat the $owner argument as an optional username restricting the returned shares, not a modifier to the initial $userid. Now $userid is the user who must have permission to see the shares that are returned or counted, and $owner, if non-null, limits the shares returned to those owned by $owner.\n"
 0.0.1:
   api: 0.0.1
   state:
@@ -486,5 +428,4 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    Initial release as a PEAR package
+  notes: "Initial release as a PEAR package\n"
